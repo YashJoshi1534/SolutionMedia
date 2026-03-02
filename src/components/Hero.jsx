@@ -37,8 +37,8 @@ const Hero = () => {
               <span className="block font-medium">Build systems so your content keeps working for you 24/7.</span>
             </p>
 
-            <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 mb-10">
-              <a href="mailto:contact@metromediahouse.co" className="btn-primary inline-flex items-center gap-2 w-full sm:w-auto justify-center group">
+            <div className="flex flex-col items-center lg:items-start gap-3 mb-10">
+              <a href="mailto:contact@metromediahouse.co" className="btn-primary inline-flex items-center gap-2 justify-center group w-full sm:w-auto">
                 Schedule a Call
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </a>
