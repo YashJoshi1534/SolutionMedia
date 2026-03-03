@@ -38,7 +38,7 @@ const Hero = () => {
             </p>
 
             <div className="flex flex-col items-center lg:items-start gap-3 mb-10">
-              <a href="mailto:contact@metromediahouse.co" className="btn-primary inline-flex items-center gap-2 justify-center group w-full sm:w-auto">
+              <a href="mailto:contact@hypemattermedia.com" className="btn-primary inline-flex items-center gap-2 justify-center group w-full sm:w-auto">
                 Schedule a Call
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </a>

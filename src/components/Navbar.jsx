@@ -23,10 +23,10 @@ const Navbar = () => {
         <div className="flex justify-between items-center h-20">
           <div className="flex-shrink-0 flex items-center gap-2 cursor-pointer">
             <div className="w-8 h-8 bg-accent-orange rounded-lg flex justify-center items-center text-white font-bold text-xl leading-none">
-              M
+              H
             </div>
             <span className="font-bold text-xl tracking-tight text-dark-green">
-              Metro Media
+              Hypematter Media
             </span>
           </div>
           <div className="flex items-center space-x-4">
@@ -43,7 +43,7 @@ const Navbar = () => {
                {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
             </button>
 
-            <a href="mailto:contact@metromediahouse.co" className="btn-primary px-6 py-2 text-sm ml-2 hidden sm:flex">
+            <a href="mailto:contact@hypemattermedia.com" className="btn-primary px-6 py-2 text-sm ml-2 hidden sm:flex">
               Schedule a Call
             </a>
           </div>

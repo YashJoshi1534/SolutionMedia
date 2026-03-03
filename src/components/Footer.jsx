@@ -34,7 +34,7 @@ const Footer = () => {
         <div className="flex flex-col md:flex-row justify-between items-center gap-6 text-dark-green/60 text-sm">
           <div className="flex items-center gap-2">
             <div className="w-6 h-6 bg-accent-orange rounded flex justify-center items-center text-white font-bold text-xs leading-none">M</div>
-            <span className="font-bold text-dark-green">Metro Media House</span>
+            <span className="font-bold text-dark-green">Hypematter Media</span>
           </div>
           
           <div className="flex gap-6">
@@ -42,7 +42,7 @@ const Footer = () => {
             <a href="#" className="hover:text-accent-orange transition-colors">Terms of Service</a>
           </div>
           
-          <p>© {new Date().getFullYear()} Metro Media House. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} Hypematter Media. All rights reserved.</p>
         </div>
 
       </div>
