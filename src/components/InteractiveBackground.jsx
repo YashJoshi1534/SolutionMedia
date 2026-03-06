@@ -1,81 +1,101 @@
-import React, { useEffect, useState } from 'react';
-import { motion, useMotionValue, useSpring } from 'framer-motion';
+import React, { useEffect, useRef, useCallback } from 'react';
 
 const InteractiveBackground = () => {
-  const [mounted, setMounted] = useState(false);
-  
-  // Motion values for tracking cursor
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
+  const canvasRef = useRef(null);
+  const mouseRef = useRef({ x: 0, y: 0 });
+  const currentRef = useRef({ x: 0, y: 0 });
+  const animFrameRef = useRef(null);
 
-  // Springs for smooth, lagging physics (fluid feel)
-  const springX = useSpring(mouseX, { stiffness: 50, damping: 20, mass: 1 });
-  const springY = useSpring(mouseY, { stiffness: 50, damping: 20, mass: 1 });
+  const draw = useCallback(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d');
+    const { width, height } = canvas;
+
+    // Lerp the current position toward the mouse (smooth trailing)
+    currentRef.current.x += (mouseRef.current.x - currentRef.current.x) * 0.04;
+    currentRef.current.y += (mouseRef.current.y - currentRef.current.y) * 0.04;
+
+    // Clear canvas
+    ctx.clearRect(0, 0, width, height);
+
+    // Cursor-following glow (warm orange)
+    const gradient1 = ctx.createRadialGradient(
+      currentRef.current.x, currentRef.current.y, 0,
+      currentRef.current.x, currentRef.current.y, width * 0.35
+    );
+    gradient1.addColorStop(0, 'rgba(249, 115, 22, 0.15)');
+    gradient1.addColorStop(0.5, 'rgba(249, 115, 22, 0.05)');
+    gradient1.addColorStop(1, 'rgba(249, 115, 22, 0)');
+
+    ctx.fillStyle = gradient1;
+    ctx.fillRect(0, 0, width, height);
+
+    // Static ambient glow top-left (deep green)
+    const gradient2 = ctx.createRadialGradient(
+      width * 0.15, height * 0.15, 0,
+      width * 0.15, height * 0.15, width * 0.4
+    );
+    gradient2.addColorStop(0, 'rgba(2, 44, 34, 0.08)');
+    gradient2.addColorStop(1, 'rgba(2, 44, 34, 0)');
+
+    ctx.fillStyle = gradient2;
+    ctx.fillRect(0, 0, width, height);
+
+    // Static ambient glow bottom-right (slate)
+    const gradient3 = ctx.createRadialGradient(
+      width * 0.8, height * 0.7, 0,
+      width * 0.8, height * 0.7, width * 0.45
+    );
+    gradient3.addColorStop(0, 'rgba(226, 232, 240, 0.12)');
+    gradient3.addColorStop(1, 'rgba(226, 232, 240, 0)');
+
+    ctx.fillStyle = gradient3;
+    ctx.fillRect(0, 0, width, height);
+
+    animFrameRef.current = requestAnimationFrame(draw);
+  }, []);
 
   useEffect(() => {
-    setMounted(true);
-    
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const resize = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    };
+
+    resize();
+    window.addEventListener('resize', resize);
+
     // Set initial position to center
-    if (typeof window !== 'undefined') {
-      mouseX.set(window.innerWidth / 2);
-      mouseY.set(window.innerHeight / 2);
-    }
+    mouseRef.current = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+    currentRef.current = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
 
     const handleMouseMove = (e) => {
-      mouseX.set(e.clientX);
-      mouseY.set(e.clientY);
+      mouseRef.current.x = e.clientX;
+      mouseRef.current.y = e.clientY;
     };
 
-    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
+
+    // Start animation loop
+    animFrameRef.current = requestAnimationFrame(draw);
 
     return () => {
+      window.removeEventListener('resize', resize);
       window.removeEventListener('mousemove', handleMouseMove);
+      if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current);
     };
-  }, [mouseX, mouseY]);
-
-  if (!mounted) return null;
+  }, [draw]);
 
   return (
-    <div className="fixed inset-0 overflow-hidden pointer-events-none -z-50 bg-primary-bg">
-      
-      {/* Dynamic Cursor-following Glow */}
-      <motion.div
-        style={{
-          x: springX,
-          y: springY,
-          translateX: '-50%',
-          translateY: '-50%',
-          willChange: 'transform',
-        }}
-        className="absolute w-[60vw] max-w-[800px] aspect-square rounded-full mix-blend-multiply filter blur-[80px] bg-accent-orange/20"
-      />
-
-      {/* Static abstract gradients to fill space */}
-      <motion.div
-        animate={{
-          x: [0, 100, -50, 0],
-          y: [0, 50, -100, 0],
-          scale: [1, 1.2, 0.9, 1],
-        }}
-        transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-        className="absolute -top-[10%] -left-[10%] w-[50vw] h-[50vw] rounded-full mix-blend-multiply filter blur-[100px] bg-dark-green/10"
-        style={{ willChange: 'transform' }}
-      />
-      
-      <motion.div
-        animate={{
-          x: [0, -100, 50, 0],
-          y: [0, -50, 100, 0],
-          scale: [1, 1.3, 0.8, 1],
-        }}
-        transition={{ duration: 25, repeat: Infinity, ease: "linear", delay: 2 }}
-        className="absolute top-[30%] -right-[10%] w-[60vw] h-[60vw] rounded-full mix-blend-multiply filter blur-[100px] bg-secondary-bg/50"
-        style={{ willChange: 'transform' }}
-      />
-
-      {/* Reduced glass effect: extreme backdrop blur destroys fps while scrolling */}
-      <div className="absolute inset-0 bg-white/5 backdrop-blur-sm mix-blend-overlay pointer-events-none"></div>
-    </div>
+    <canvas
+      ref={canvasRef}
+      className="fixed inset-0 pointer-events-none -z-50"
+      style={{ willChange: 'transform' }}
+    />
   );
 };
 

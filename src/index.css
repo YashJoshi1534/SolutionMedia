@@ -34,11 +34,11 @@
   }
 }
 
-/* Base transitions for specific elements instead of wildcard */
-h1, h2, h3, h4, h5, h6, p, span, div, section, a, button {
-  transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform;
+/* Only apply transitions to interactive elements */
+a, button {
+  transition-property: background-color, border-color, color, opacity, box-shadow, transform;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 300ms;
+  transition-duration: 200ms;
 }
 
 @layer components {
