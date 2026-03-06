@@ -45,7 +45,8 @@ const ProblemsWeSolve = () => {
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              viewport={{ once: false, amount: 0.2 }}
+              whileHover={{ y: -5, scale: 1.02 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
               key={index} 
               className="w-full md:w-[calc(50%-12px)] bg-secondary-bg/10 rounded-2xl p-8 flex flex-col hover:bg-secondary-bg/20 transition-colors border border-secondary-bg/20 shadow-lg"
@@ -62,8 +63,9 @@ const ProblemsWeSolve = () => {
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.6 }}
+          viewport={{ once: false, amount: 0.5 }}
+          whileHover={{ scale: 1.05 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
           className="flex justify-center"
         >
           <div className="inline-flex items-center gap-3 bg-accent-orange/10 border border-accent-orange/30 text-primary-bg px-8 py-4 rounded-full font-medium text-sm text-center">

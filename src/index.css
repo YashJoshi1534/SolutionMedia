@@ -4,26 +4,41 @@
 
 @layer base {
   :root {
-    --primary-bg: 252 250 239;
-    --accent-orange: 255 103 0;
-    --secondary-bg: 219 208 189;
-    --dark-green: 12 84 70;
+    --primary-bg: 249 250 251; /* gray-50 */
+    --accent-orange: 249 115 22; /* orange-500 */
+    --secondary-bg: 226 232 240; /* slate-200 */
+    --dark-green: 2 44 34; /* emerald-950 */
   }
   
   .dark {
-    --primary-bg: 12 84 70;
-    --accent-orange: 255 103 0;
-    --secondary-bg: 26 112 94;
-    --dark-green: 252 250 239;
+    --primary-bg: 2 44 34; /* emerald-950 */
+    --accent-orange: 249 115 22; /* orange-500 */
+    --secondary-bg: 6 78 59; /* emerald-900 */
+    --dark-green: 249 250 251; /* gray-50 */
   }
 
   html {
     scroll-behavior: smooth;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  ::-webkit-scrollbar {
+    display: none;
   }
 
   body {
-    @apply bg-primary-bg text-dark-green font-sans antialiased transition-colors duration-300;
+    @apply bg-primary-bg text-dark-green font-sans antialiased;
+    transition: background-color 0.3s ease-out, color 0.3s ease-out;
   }
+}
+
+/* Base transitions for specific elements instead of wildcard */
+h1, h2, h3, h4, h5, h6, p, span, div, section, a, button {
+  transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
 }
 
 @layer components {

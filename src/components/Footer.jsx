@@ -25,9 +25,9 @@ const Footer = () => {
              <span className="font-bold text-accent-orange mt-2 inline-block">No pressure. No obligation. Just clarity.</span>
            </p>
            
-           <a href="mailto:contact@metromediahouse.co" className="btn-primary inline-flex items-center gap-2 relative z-10 px-10 py-4 text-lg">
+           <a href="mailto:contact@metromediahouse.co" className="btn-primary inline-flex items-center gap-2 relative z-10 px-10 py-4 text-lg hover:scale-105 hover:shadow-[0_4px_15px_rgba(255,103,0,0.4)] transition-all duration-300 group">
              Schedule a Form Call
-             <ArrowRight className="w-5 h-5 group-hover:translate-x-1" />
+             <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
            </a>
         </motion.div>
 

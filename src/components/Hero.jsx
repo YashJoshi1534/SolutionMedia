@@ -16,7 +16,8 @@ const Hero = () => {
           {/* Text Content */}
           <motion.div 
             initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: false, amount: 0.2 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
             className="text-center lg:text-left"
           >
@@ -38,7 +39,7 @@ const Hero = () => {
             </p>
 
             <div className="flex flex-col items-center lg:items-start gap-3 mb-10">
-              <a href="mailto:contact@hypemattermedia.com" className="btn-primary inline-flex items-center gap-2 justify-center group w-full sm:w-auto">
+              <a href="mailto:contact@hypemattermedia.com" className="btn-primary inline-flex items-center gap-2 justify-center group w-full sm:w-auto hover:scale-105 hover:shadow-[0_4px_15px_rgba(255,103,0,0.4)] transition-all duration-300">
                 Schedule a Call
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </a>
@@ -68,18 +69,24 @@ const Hero = () => {
           {/* Video Placeholder */}
           <motion.div 
             initial={{ opacity: 0, scale: 0.9, rotate: -2 }}
-            animate={{ opacity: 1, scale: 1, rotate: 0 }}
+            whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
+            viewport={{ once: false, amount: 0.2 }}
             transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
             className="relative mx-auto w-full max-w-lg lg:max-w-none"
           >
             <div className="absolute inset-0 bg-gradient-to-tr from-accent-orange/20 to-transparent rounded-3xl blur-2xl transform rotate-3"></div>
-            <div className="relative aspect-[4/5] sm:aspect-video lg:aspect-[4/5] bg-dark-green rounded-3xl shadow-2xl overflow-hidden border border-secondary-bg/20 flex flex-col justify-center items-center group cursor-pointer">
+            <div className="relative aspect-[4/5] sm:aspect-video lg:aspect-[4/5] bg-dark-green rounded-3xl shadow-2xl overflow-hidden border border-secondary-bg/20 flex flex-col justify-center items-center group cursor-pointer hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(0,0,0,0.2)] transition-all duration-500">
                {/* Video thumbnail abstraction */}
                <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80')] bg-cover bg-center opacity-40 mix-blend-overlay"></div>
                <div className="absolute inset-0 bg-dark-green/40 group-hover:bg-dark-green/20 transition-colors duration-500"></div>
                
-               <div className="w-20 h-20 rounded-full bg-white/10 backdrop-blur-md flex justify-center items-center border border-white/20 group-hover:scale-110 transition-transform duration-300 shadow-xl">
-                 <PlayCircle className="w-10 h-10 text-white" />
+               <div className="relative w-20 h-20 flex justify-center items-center group-hover:scale-110 transition-transform duration-300">
+                 {/* Pulsing rings */}
+                 <div className="absolute inset-0 rounded-full bg-accent-orange/40 animate-[ping_2s_cubic-bezier(0,0,0.2,1)_infinite]"></div>
+                 <div className="absolute inset-0 rounded-full bg-accent-orange/20 animate-[ping_3s_cubic-bezier(0,0,0.2,1)_infinite]"></div>
+                 {/* Main button */}
+                 <div className="absolute inset-0 rounded-full bg-white/10 backdrop-blur-md border border-white/20 shadow-xl"></div>
+                 <PlayCircle className="w-10 h-10 text-white relative z-10" />
                </div>
                <p className="mt-4 text-white font-medium text-lg tracking-wide z-10">Watch My Process</p>
             </div>
