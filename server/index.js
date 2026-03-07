@@ -13,8 +13,21 @@ const PORT = process.env.PORT || 3001;
 
 // ─── Middleware ──────────────────────────────────────────────────
 app.use(express.json());
+const allowedOrigins = [
+  'http://localhost:5173',
+  'https://hypemattermedia.com',
+  'https://www.hypemattermedia.com',
+  process.env.FRONTEND_URL,
+].filter(Boolean);
+
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin) || origin.includes('vercel.app')) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  }
 }));
 app.use(requestLogger);
 
@@ -35,10 +48,14 @@ app.use(notFoundHandler);
 app.use(errorHandler);
 
 // ─── Start Server ───────────────────────────────────────────────
-app.listen(PORT, () => {
-  logger.divider();
-  logger.info(`🚀 Mail server running on http://localhost:${PORT}`);
-  logger.info(`📬 Receiver: ${process.env.RECEIVER_EMAIL || 'contact@hypemattermedia.com'}`);
-  logger.info(`🌐 CORS origin: ${process.env.FRONTEND_URL || 'http://localhost:5173'}`);
-  logger.divider();
-});
+if (process.env.NODE_ENV !== 'production' && process.env.VERCEL !== '1') {
+  app.listen(PORT, () => {
+    logger.divider();
+    logger.info(`🚀 Mail server running on http://localhost:${PORT}`);
+    logger.info(`📬 Receiver: ${process.env.RECEIVER_EMAIL || 'contact@hypemattermedia.com'}`);
+    logger.info(`🌐 CORS origin: ${allowedOrigins.join(', ')}`);
+    logger.divider();
+  });
+}
+
+export default app;
