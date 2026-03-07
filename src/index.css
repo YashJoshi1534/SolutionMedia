@@ -4,26 +4,25 @@
 
 @layer base {
   :root {
-    --primary-bg: 249 250 251; /* gray-50 */
-    --accent-orange: 249 115 22; /* orange-500 */
-    --secondary-bg: 226 232 240; /* slate-200 */
-    --dark-green: 2 44 34; /* emerald-950 */
+    --primary-bg: 10 10 15;        /* near-black */
+    --accent-orange: 153 69 255;    /* purple-500 / #9945FF */
+    --secondary-bg: 18 18 26;      /* dark card bg */
+    --dark-green: 245 245 250;     /* off-white text */
   }
   
   .dark {
-    --primary-bg: 2 44 34; /* emerald-950 */
-    --accent-orange: 249 115 22; /* orange-500 */
-    --secondary-bg: 6 78 59; /* emerald-900 */
-    --dark-green: 249 250 251; /* gray-50 */
+    --primary-bg: 10 10 15;
+    --accent-orange: 153 69 255;
+    --secondary-bg: 18 18 26;
+    --dark-green: 245 245 250;
   }
 
   html {
     scroll-behavior: smooth;
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
 
-  /* Hide scrollbar for Chrome, Safari and Opera */
   ::-webkit-scrollbar {
     display: none;
   }
@@ -34,7 +33,6 @@
   }
 }
 
-/* Only apply transitions to interactive elements */
 a, button {
   transition-property: background-color, border-color, color, opacity, box-shadow, transform;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
@@ -43,6 +41,24 @@ a, button {
 
 @layer components {
   .btn-primary {
-    @apply bg-accent-orange text-white px-8 py-3 rounded-full font-semibold transition-all duration-300 hover:scale-105 hover:shadow-lg hover:bg-[#e55d00] shadow-md;
+    @apply bg-accent-orange text-white px-8 py-3 rounded-full font-semibold transition-all duration-300 hover:scale-105 hover:shadow-lg shadow-md;
+    background: linear-gradient(135deg, rgb(153, 69, 255), rgb(123, 47, 190));
   }
+  .btn-primary:hover {
+    box-shadow: 0 4px 25px rgba(153, 69, 255, 0.4);
+  }
+}
+
+/* Animated gradient line for section dividers */
+@keyframes gradientSlide {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.animated-line {
+  height: 3px;
+  background: linear-gradient(90deg, transparent, #9945FF, #C084FC, #BE2F7B, #9945FF, transparent);
+  background-size: 200% 100%;
+  animation: gradientSlide 3s ease-in-out infinite;
 }
