@@ -33,6 +33,9 @@ function App() {
       <Routes>
         <Route path="/" element={<LandingPage openPopup={openPopup} />} />
         <Route path="/pricing" element={<Pricing />} />
+
+        {/* This will automatically redirect things like /index.html or /random-text back to the home page */}
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
       <ContactPopup isOpen={popupOpen} onClose={() => setPopupOpen(false)} />
     </>
