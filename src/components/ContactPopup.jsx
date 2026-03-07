@@ -56,8 +56,7 @@ const ContactPopup = ({ isOpen, onClose }) => {
     setErrorMsg('');
 
     try {
-      const apiUrl = import.meta.env.DEV ? '/api/contact' : 'https://hypemattermedia.com/api/contact';
-      const res = await fetch(apiUrl, {
+      const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
