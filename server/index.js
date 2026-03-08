@@ -5,6 +5,7 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 dotenv.config({ path: path.join(__dirname, '.env') });
+
 import express from 'express';
 import cors from 'cors';
 
@@ -14,12 +15,12 @@ import { requestLogger } from './middleware/requestLogger.js';
 import { notFoundHandler, errorHandler } from './middleware/errorHandler.js';
 import contactRouter from './routes/contact.js';
 
-// ─── App Setup ───────────────────────────────────────────────────
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// ─── Middleware ──────────────────────────────────────────────────
+// Middleware
 app.use(express.json());
+
 const allowedOrigins = [
   'http://localhost:5174',
   'https://hypemattermedia.com',
@@ -37,15 +38,31 @@ app.use(cors({
     }
   }
 }));
+
 app.use(requestLogger);
 
-// ─── Root Route (important for Vercel) ───────────────────────────
+/*
+🔥 IMPORTANT FOR VERCEL
+Connect DB before every request
+*/
+app.use(async (req, res, next) => {
+  try {
+    await connectDB();
+    next();
+  } catch (error) {
+    console.error("MongoDB connection failed:", error);
+    res.status(500).json({ error: "Database connection failed" });
+  }
+});
+
+// Routes
 app.get('/', (req, res) => {
   res.json({
     success: true,
     message: 'Hypematter Media API is running 🚀',
   });
 });
+
 app.use('/api/contact', contactRouter);
 
 app.get('/api/health', (_req, res) => {
@@ -57,23 +74,16 @@ app.get('/api/health', (_req, res) => {
   });
 });
 
-// ─── Error Handling ─────────────────────────────────────────────
+// Error Handling
 app.use(notFoundHandler);
 app.use(errorHandler);
 
-// ─── Start Server (Local) & Export (Vercel) ──────────────────────
+// Local server
 if (process.env.NODE_ENV !== 'production' && process.env.VERCEL !== '1') {
   app.listen(PORT, async () => {
     await connectDB();
-    logger.divider();
     logger.info(`🚀 Server running on http://localhost:${PORT}`);
-    logger.info(`📬 Receiver: ${process.env.RECEIVER_EMAIL || 'contact@hypemattermedia.com'}`);
-    logger.info(`🌐 CORS origin: ${allowedOrigins.join(', ')}`);
-    logger.divider();
   });
-} else {
-  // Setup MongoDB connection out-of-band for Vercel
-  connectDB();
 }
 
 export default app;
