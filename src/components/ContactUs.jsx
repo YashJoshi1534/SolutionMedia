@@ -38,17 +38,18 @@ const handleSubmit = async (e) => {
       body: JSON.stringify(formData),
     });
 
-    let data;
+    const text = await res.text(); // read raw response
+    console.log("SERVER RESPONSE:", text);
 
-    // Safely parse JSON
+    let data;
     try {
-      data = await res.json();
-    } catch (err) {
-      throw new Error("Server returned an invalid response.");
+      data = JSON.parse(text);
+    } catch {
+      throw new Error("Server returned non-JSON response");
     }
 
     if (!res.ok) {
-      throw new Error(data?.error || "Something went wrong. Please try again.");
+      throw new Error(data.error || "Something went wrong.");
     }
 
     setStatus("success");
@@ -61,7 +62,8 @@ const handleSubmit = async (e) => {
 
     setTimeout(() => setStatus("idle"), 5000);
   } catch (err) {
-    setErrorMsg(err.message || "Failed to send message.");
+    console.error(err);
+    setErrorMsg(err.message);
     setStatus("error");
     setTimeout(() => setStatus("idle"), 5000);
   }
