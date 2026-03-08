@@ -54,14 +54,19 @@ app.get('/api/health', (_req, res) => {
 app.use(notFoundHandler);
 app.use(errorHandler);
 
-// ─── Start Server ───────────────────────────────────────────────
-app.listen(PORT, async () => {
-  await connectDB();
-  logger.divider();
-  logger.info(`🚀 Server running on http://localhost:${PORT}`);
-  logger.info(`📬 Receiver: ${process.env.RECEIVER_EMAIL || 'contact@hypemattermedia.com'}`);
-  logger.info(`🌐 CORS origin: ${allowedOrigins.join(', ')}`);
-  logger.divider();
-});
+// ─── Start Server (Local) & Export (Vercel) ──────────────────────
+if (process.env.NODE_ENV !== 'production' && process.env.VERCEL !== '1') {
+  app.listen(PORT, async () => {
+    await connectDB();
+    logger.divider();
+    logger.info(`🚀 Server running on http://localhost:${PORT}`);
+    logger.info(`📬 Receiver: ${process.env.RECEIVER_EMAIL || 'contact@hypemattermedia.com'}`);
+    logger.info(`🌐 CORS origin: ${allowedOrigins.join(', ')}`);
+    logger.divider();
+  });
+} else {
+  // Setup MongoDB connection out-of-band for Vercel
+  connectDB();
+}
 
 export default app;

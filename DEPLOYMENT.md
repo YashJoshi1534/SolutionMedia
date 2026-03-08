@@ -1,31 +1,33 @@
-# Deployment Guide (Client/Server Architecture)
+# Deployment Guide (Vercel Backend / Render Frontend)
 
-The project is now split into a proper Monorepo. The React frontend should be deployed as a static site (Vercel, Render), while the Node.js backend should be deployed as a Web Service (Render, Heroku, Railway).
+This guide walks you through deploying the **React Frontend** to Render as a static site and deploying your **Node/Express Backend** (with MongoDB) to Vercel as a Serverless API!
 
-## 1. Backend Deployment (Render)
-1. In your Render Dashboard, click **New > Web Service**.
+## 1. Frontend Deployment (Render)
+As observed, Render needs to execute the Vite build process.
+1. In your Render Dashboard, click **New > Static Site**.
 2. Connect this repository.
 3. Configure the settings:
-   - **Root Directory**: `server`
-   - **Environment**: `Node`
-   - **Build Command**: `npm install`
-   - **Start Command**: `npm start`
+   - **Root Directory**: `.` (Leave blank or specifically set to root, **NOT** `server`)
+   - **Build Command**: `npm run build`
+   - **Publish Directory**: `dist`
+4. **Environment Variables**:
+   - `VITE_API_URL`: The deployed URL of your Vercel backend (e.g., `https://my-backend-vercel.app`).
+
+*Render will now properly install standard packages and run the Vite compiler without throwing "Missing script: build" errors!*
+
+## 2. Backend Deployment (Vercel)
+Vercel is heavily optimized for Serverless functions, meaning it will automatically host your `/api` endpoints using the attached `vercel.json` and `api/index.js` wrapper.
+1. Go to your Vercel Dashboard and click **Add New > Project**.
+2. Connect this repository.
+3. Configure settings:
+   - **Framework Preset**: Other
+   - **Build Command**: Override and leave blank.
+   - **Output Directory**: Override and leave blank.
 4. **Environment Variables**:
    - `MONGO_URI`: Your MongoDB connection string.
    - `EMAIL_USER`: Your Nodemailer email address.
    - `EMAIL_PASS`: Your Nodemailer email password.
    - `RECEIVER_EMAIL`: Where you want to receive admin notifications.
-   - `FRONTEND_URL`: URL of your deployed frontend (e.g., `https://my-frontend.vercel.app`) to whitelist CORS.
-
-## 2. Frontend Deployment (Vercel)
-1. Go to your Vercel Dashboard and click **Add New > Project**.
-2. Connect this repository.
-3. Configure settings:
-   - **Framework Preset**: Vite
-   - **Build Command**: `npm run build`
-   - **Output Directory**: `dist`
-4. **Environment Variables**:
-   - `VITE_API_URL`: The deployed URL of your Render backend (e.g., `https://my-backend.onrender.com`).
 
 ## Local Development
 Run the backend:

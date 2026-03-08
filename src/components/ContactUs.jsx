@@ -30,7 +30,7 @@ const handleSubmit = async (e) => {
   setErrorMsg("");
 
   try {
-    const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+    const apiUrl = import.meta.env.VITE_API_URL || '';
     const res = await fetch(`${apiUrl}/api/contact`, {
       method: "POST",
       headers: {
