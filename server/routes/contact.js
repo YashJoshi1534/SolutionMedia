@@ -3,6 +3,7 @@ import logger from "../utils/logger.js";
 import transporter from "../config/transporter.js";
 import { buildAdminEmail } from "../templates/adminEmail.js";
 import { buildConfirmationEmail } from "../templates/confirmationEmail.js";
+import Contact from "../models/Contact.js";
 
 const router = Router();
 
@@ -54,6 +55,18 @@ router.post("/", async (req, res) => {
         </div>
       `;
     }
+
+    // Save to Database
+    const newContact = await Contact.create({
+      name,
+      email,
+      subject,
+      message,
+      preferredDate,
+      preferredTime,
+    });
+
+    logger.success(`Contact saved to database with ID: ${newContact._id}`);
 
     // send admin email
     await transporter.sendMail({

@@ -3,6 +3,7 @@ import express from 'express';
 import cors from 'cors';
 
 import logger from './utils/logger.js';
+import { connectDB } from './config/db.js';
 import { requestLogger } from './middleware/requestLogger.js';
 import { notFoundHandler, errorHandler } from './middleware/errorHandler.js';
 import contactRouter from './routes/contact.js';
@@ -54,14 +55,13 @@ app.use(notFoundHandler);
 app.use(errorHandler);
 
 // ─── Start Server ───────────────────────────────────────────────
-if (process.env.NODE_ENV !== 'production' && process.env.VERCEL !== '1') {
-  app.listen(PORT, () => {
-    logger.divider();
-    logger.info(`🚀 Mail server running on http://localhost:${PORT}`);
-    logger.info(`📬 Receiver: ${process.env.RECEIVER_EMAIL || 'contact@hypemattermedia.com'}`);
-    logger.info(`🌐 CORS origin: ${allowedOrigins.join(', ')}`);
-    logger.divider();
-  });
-}
+app.listen(PORT, async () => {
+  await connectDB();
+  logger.divider();
+  logger.info(`🚀 Server running on http://localhost:${PORT}`);
+  logger.info(`📬 Receiver: ${process.env.RECEIVER_EMAIL || 'contact@hypemattermedia.com'}`);
+  logger.info(`🌐 CORS origin: ${allowedOrigins.join(', ')}`);
+  logger.divider();
+});
 
 export default app;
