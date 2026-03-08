@@ -24,35 +24,48 @@ const ContactUs = () => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setStatus('loading');
-    setErrorMsg('');
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setStatus("loading");
+  setErrorMsg("");
 
+  try {
+    const res = await fetch("/api/contact", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
+
+    let data;
+
+    // Safely parse JSON
     try {
-      const res = await fetch('/api/contact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        throw new Error(data.error || 'Something went wrong. Please try again.');
-      }
-
-      setStatus('success');
-      setFormData({ name: '', email: '', subject: '', message: '' });
-
-      setTimeout(() => setStatus('idle'), 5000);
+      data = await res.json();
     } catch (err) {
-      setErrorMsg(err.message);
-      setStatus('error');
-      setTimeout(() => setStatus('idle'), 5000);
+      throw new Error("Server returned an invalid response.");
     }
-  };
 
+    if (!res.ok) {
+      throw new Error(data?.error || "Something went wrong. Please try again.");
+    }
+
+    setStatus("success");
+    setFormData({
+      name: "",
+      email: "",
+      subject: "",
+      message: "",
+    });
+
+    setTimeout(() => setStatus("idle"), 5000);
+  } catch (err) {
+    setErrorMsg(err.message || "Failed to send message.");
+    setStatus("error");
+    setTimeout(() => setStatus("idle"), 5000);
+  }
+};
   const inputClasses =
     'w-full bg-primary-bg/60 backdrop-blur-sm border border-secondary-bg/40 rounded-xl px-4 py-3.5 text-dark-green placeholder:text-dark-green/40 focus:outline-none focus:ring-2 focus:ring-accent-orange/50 focus:border-accent-orange/50 transition-all duration-300';
 
