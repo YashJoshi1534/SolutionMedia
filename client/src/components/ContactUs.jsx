@@ -30,7 +30,7 @@ const handleSubmit = async (e) => {
   setErrorMsg("");
 
   try {
-    const apiUrl = import.meta.env.VITE_API_URL || '';
+    const apiUrl = import.meta.env.VITE_API_URL || 'https://solution-media.vercel.app';
     const res = await fetch(`${apiUrl}/api/contact`, {
       method: "POST",
       headers: {
@@ -282,7 +282,7 @@ const handleSubmit = async (e) => {
 
               {/* Submit Button */}
               <button
-                type="submit"
+               type="submit"
                 disabled={status === 'loading'}
                 className="btn-primary w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-10 py-4 text-base disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:scale-100 group"
               >

@@ -11,6 +11,6 @@ export const connectDB = async () => {
         logger.success(`MongoDB Connected: ${conn.connection.host}`);
     } catch (error) {
         logger.error('Error connecting to MongoDB', error.message);
-        process.exit(1);
+        // Do not process.exit() on Vercel so we can send 500 status codes.
     }
 };
