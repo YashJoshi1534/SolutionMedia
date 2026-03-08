@@ -31,7 +31,13 @@ app.use(cors({
 }));
 app.use(requestLogger);
 
-// ─── Routes ─────────────────────────────────────────────────────
+// ─── Root Route (important for Vercel) ───────────────────────────
+app.get('/', (req, res) => {
+  res.json({
+    success: true,
+    message: 'Hypematter Media API is running 🚀',
+  });
+});
 app.use('/api/contact', contactRouter);
 
 app.get('/api/health', (_req, res) => {
