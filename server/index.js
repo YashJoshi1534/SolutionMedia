@@ -21,7 +21,7 @@ const PORT = process.env.PORT || 3001;
 // ─── Middleware ──────────────────────────────────────────────────
 app.use(express.json());
 const allowedOrigins = [
-  'http://localhost:5173',
+  'http://localhost:5174',
   'https://hypemattermedia.com',
   'https://www.hypemattermedia.com',
   process.env.FRONTEND_URL,

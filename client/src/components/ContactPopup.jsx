@@ -315,6 +315,7 @@ const ContactPopup = ({ isOpen, onClose }) => {
                           min={getTomorrow()}
                           value={formData.preferredDate}
                           onChange={handleChange}
+                          onClick={(e) => e.target.showPicker && e.target.showPicker()}
                           className={inputClasses}
                         />
                       </div>
@@ -329,6 +330,7 @@ const ContactPopup = ({ isOpen, onClose }) => {
                           type="time"
                           value={formData.preferredTime}
                           onChange={handleChange}
+                          onClick={(e) => e.target.showPicker && e.target.showPicker()}
                           className={inputClasses}
                         />
                       </div>

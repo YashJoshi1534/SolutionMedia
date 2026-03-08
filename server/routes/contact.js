@@ -23,6 +23,20 @@ router.post("/", async (req, res) => {
 
     logger.info(`Contact form received from ${name} (${email})`);
 
+    // Check rate limit: 1 email per 10 minutes
+    const tenMinutesAgo = new Date(Date.now() - 10 * 60 * 1000);
+    const recentContact = await Contact.findOne({
+      email,
+      createdAt: { $gte: tenMinutesAgo },
+    });
+
+    if (recentContact) {
+      return res.status(429).json({
+        success: false,
+        error: "Please wait 10 minutes before sending another message.",
+      });
+    }
+
     // Build schedule HTML for Admin Email
     let scheduleHtml = '';
     if (preferredDate) {

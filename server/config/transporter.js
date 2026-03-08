@@ -1,6 +1,7 @@
 import nodemailer from "nodemailer";
 import logger from "../utils/logger.js";
-
+import dotenv from "dotenv";
+dotenv.config();
 const maskedEmail = process.env.EMAIL_USER
   ? process.env.EMAIL_USER.replace(/(.{3}).*(@.*)/, "$1***$2")
   : "❌ NOT SET";
@@ -16,6 +17,13 @@ const transporter = nodemailer.createTransport({
   connectionTimeout: 5000,
 });
 
-// ❌ DO NOT run transporter.verify() in serverless environments
+// Verify transporter connection
+transporter.verify((error, success) => {
+  if (error) {
+    logger.error("❌ Email transporter verification failed:", error);
+  } else {
+    logger.info("✅ Email transporter is ready to send emails");
+  }
+});
 
 export default transporter;

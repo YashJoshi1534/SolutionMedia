@@ -31,7 +31,8 @@ const ContactSchema = new mongoose.Schema({
         trim: true
     }
 }, {
-    timestamps: true
+    timestamps: true,
+    collection: 'solutionmedia'
 });
 
 const Contact = mongoose.model('Contact', ContactSchema);
