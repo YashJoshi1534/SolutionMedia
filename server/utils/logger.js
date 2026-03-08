@@ -2,12 +2,16 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
+const isVercel = process.env.VERCEL === "1";
+
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const LOG_DIR = path.join(__dirname, '..', 'logs');
 
-// Ensure logs directory exists
-if (!fs.existsSync(LOG_DIR)) {
-    fs.mkdirSync(LOG_DIR, { recursive: true });
+// Create logs folder only locally
+if (!isVercel) {
+    if (!fs.existsSync(LOG_DIR)) {
+        fs.mkdirSync(LOG_DIR, { recursive: true });
+    }
 }
 
 // ─── Log Levels ──────────────────────────────────────────────────
@@ -25,17 +29,17 @@ const DIM = '\x1b[2m';
 
 // ─── File Writer ─────────────────────────────────────────────────
 function getLogFilePath() {
-    const date = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+    const date = new Date().toISOString().split('T')[0];
     return path.join(LOG_DIR, `${date}.log`);
 }
 
-function writeToFile(formattedLine) {
-    // Strip ANSI color codes for file output
-    const clean = formattedLine.replace(/\x1b\[\d+m/g, '');
-    fs.appendFileSync(getLogFilePath(), clean + '\n', 'utf-8');
+function writeToFile(line) {
+    if (isVercel) return; // ❌ Skip file logging on Vercel
+
+    fs.appendFileSync(getLogFilePath(), line + '\n', 'utf-8');
 }
 
-// ─── Core Formatter ──────────────────────────────────────────────
+// ─── Formatter ───────────────────────────────────────────────────
 function formatLog(level, message, data) {
     const timestamp = new Date().toISOString();
     const { label, color, emoji } = LEVELS[level];
@@ -50,7 +54,7 @@ function formatLog(level, message, data) {
     return { consoleLine, fileLine };
 }
 
-// ─── Logger API ──────────────────────────────────────────────────
+// ─── Logger ──────────────────────────────────────────────────────
 const logger = {
     debug(msg, data) {
         const { consoleLine, fileLine } = formatLog('DEBUG', msg, data);
