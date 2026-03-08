@@ -83,21 +83,37 @@ router.post("/", async (req, res) => {
     logger.success(`Contact saved to database with ID: ${newContact._id}`);
 
     // send admin email
-    await transporter.sendMail({
-      from: process.env.EMAIL_USER,
-      replyTo: email,
-      to: receiverEmail,
-      subject: `[Contact Form] ${subject} — from ${name}`,
-      html: buildAdminEmail({ name, email, subject, message, scheduleHtml }),
-    });
+    // await transporter.sendMail({
+    //   from: process.env.EMAIL_USER,
+    //   replyTo: email,
+    //   to: receiverEmail,
+    //   subject: `[Contact Form] ${subject} — from ${name}`,
+    //   html: buildAdminEmail({ name, email, subject, message, scheduleHtml }),
+    // });
 
-    // send confirmation email
-    await transporter.sendMail({
-      from: process.env.EMAIL_USER,
-      to: email,
-      subject: `Thanks for contacting us`,
-      html: buildConfirmationEmail({ name, subject, message, userScheduleInfo }),
-    });
+    // // send confirmation email
+    // await transporter.sendMail({
+    //   from: process.env.EMAIL_USER,
+    //   to: email,
+    //   subject: `Thanks for contacting us`,
+    //   html: buildConfirmationEmail({ name, subject, message, userScheduleInfo }),
+    // });
+    await Promise.all([
+      transporter.sendMail({
+        from: process.env.EMAIL_USER,
+        replyTo: email,
+        to: receiverEmail,
+        subject: `[Contact Form] ${subject} — from ${name}`,
+        html: buildAdminEmail({ name, email, subject, message, scheduleHtml }),
+      }),
+
+      transporter.sendMail({
+        from: process.env.EMAIL_USER,
+        to: email,
+        subject: "Thanks for contacting us",
+        html: buildConfirmationEmail({ name, subject, message, userScheduleInfo }),
+      }),
+    ]);
 
     return res.status(200).json({
       success: true,
