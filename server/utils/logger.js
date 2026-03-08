@@ -2,15 +2,20 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-const isVercel = process.env.VERCEL === "1";
+const isProduction = process.env.NODE_ENV === "production";
+const isVercel = process.env.VERCEL === "1" || isProduction;
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const LOG_DIR = path.join(__dirname, '..', 'logs');
 
 // Create logs folder only locally
 if (!isVercel) {
-    if (!fs.existsSync(LOG_DIR)) {
-        fs.mkdirSync(LOG_DIR, { recursive: true });
+    try {
+        if (!fs.existsSync(LOG_DIR)) {
+            fs.mkdirSync(LOG_DIR, { recursive: true });
+        }
+    } catch (error) {
+        console.warn('⚠️ Could not create log directory (possibly read-only filesystem). File logging disabled.');
     }
 }
 
@@ -36,7 +41,11 @@ function getLogFilePath() {
 function writeToFile(line) {
     if (isVercel) return; // ❌ Skip file logging on Vercel
 
-    fs.appendFileSync(getLogFilePath(), line + '\n', 'utf-8');
+    try {
+        fs.appendFileSync(getLogFilePath(), line + '\n', 'utf-8');
+    } catch (error) {
+        // Silently ignore to prevent crashes on read-only systems
+    }
 }
 
 // ─── Formatter ───────────────────────────────────────────────────
