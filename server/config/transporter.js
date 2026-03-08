@@ -13,6 +13,7 @@ const transporter = nodemailer.createTransport({
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS,
   },
+  connectionTimeout: 5000,
 });
 
 // ❌ DO NOT run transporter.verify() in serverless environments
