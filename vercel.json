@@ -1,9 +1,13 @@
 {
   "version": 2,
+  "framework": null,
+  "buildCommand": "cd server && npm install",
+  "outputDirectory": "api",
   "rewrites": [
     {
       "source": "/api/(.*)",
       "destination": "/api/index.js"
     }
-  ]
+  ],
+  "ignoreCommand": "exit 0"
 }

@@ -21,8 +21,8 @@ Vercel is heavily optimized for Serverless functions, meaning it will automatica
 2. Connect this repository.
 3. Configure settings:
    - **Framework Preset**: Other
-   - **Build Command**: Override and leave blank.
-   - **Output Directory**: Override and leave blank.
+   - **Build Command**: `cd server && npm install`
+   - **Output Directory**: `api`
 4. **Environment Variables**:
    - `MONGO_URI`: Your MongoDB connection string.
    - `EMAIL_USER`: Your Nodemailer email address.
