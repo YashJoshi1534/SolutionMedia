@@ -5,7 +5,7 @@
   "outputDirectory": "api",
   "rewrites": [
     {
-      "source": "/api/(.*)",
+      "source": "/(.*)",
       "destination": "/api/index.js"
     }
   ],
