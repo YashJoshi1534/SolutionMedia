@@ -1,1 +1,7 @@
-{}
+{
+    "name": "solution-media-root",
+    "private": true,
+    "scripts": {
+        "postinstall": "cd server && npm install"
+    }
+}
