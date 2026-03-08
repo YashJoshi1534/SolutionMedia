@@ -24,6 +24,7 @@ const allowedOrigins = [
   'http://localhost:5174',
   'https://hypemattermedia.com',
   'https://www.hypemattermedia.com',
+  'https://solution-media.vercel.app',
   process.env.FRONTEND_URL,
 ].filter(Boolean);
 
