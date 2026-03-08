@@ -71,16 +71,16 @@ router.post("/", async (req, res) => {
     }
 
     // Save to Database
-    const newContact = await Contact.create({
-      name,
-      email,
-      subject,
-      message,
-      preferredDate,
-      preferredTime,
-    });
+    // const newContact = await Contact.create({
+    //   name,
+    //   email,
+    //   subject,
+    //   message,
+    //   preferredDate,
+    //   preferredTime,
+    // });
 
-    logger.success(`Contact saved to database with ID: ${newContact._id}`);
+    // logger.success(`Contact saved to database with ID: ${newContact._id}`);
 
     // send admin email
     await transporter.sendMail({
@@ -105,8 +105,8 @@ router.post("/", async (req, res) => {
     });
 
   } catch (error) {
-    logger.error("Contact API error", error.message || error.toString());
-
+    console.error("CONTACT ERROR:", error);
+    logger.error(`Contact API error: ${error.stack}`);
     return res.status(500).json({
       success: false,
       error: error.message || "Failed to send email or save to DB",
