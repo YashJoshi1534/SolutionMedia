@@ -71,20 +71,20 @@ router.post("/", async (req, res) => {
     }
 
     // Save to Database
-    // const newContact = await Contact.create({
-    //   name,
-    //   email,
-    //   subject,
-    //   message,
-    //   preferredDate,
-    //   preferredTime,
-    // });
+    const newContact = await Contact.create({
+      name,
+      email,
+      subject,
+      message,
+      preferredDate,
+      preferredTime,
+    });
 
-    // logger.success(`Contact saved to database with ID: ${newContact._id}`);
+    logger.success(`Contact saved to database with ID: ${newContact._id}`);
 
     // send admin email
     await transporter.sendMail({
-      from: `"Hypematter Media" <${process.env.EMAIL_USER}>`,
+      from: process.env.EMAIL_USER,
       replyTo: email,
       to: receiverEmail,
       subject: `[Contact Form] ${subject} — from ${name}`,
@@ -93,7 +93,7 @@ router.post("/", async (req, res) => {
 
     // send confirmation email
     await transporter.sendMail({
-      from: `"Hypematter Media" <${process.env.EMAIL_USER}>`,
+      from: process.env.EMAIL_USER,
       to: email,
       subject: `Thanks for contacting us`,
       html: buildConfirmationEmail({ name, subject, message, userScheduleInfo }),
@@ -105,8 +105,8 @@ router.post("/", async (req, res) => {
     });
 
   } catch (error) {
-    console.error("CONTACT ERROR:", error);
-    logger.error(`Contact API error: ${error.stack}`);
+    console.error("CONTACT API ERROR:", error);
+    logger.error(`Contact API error: ${error?.stack || error}`);
     return res.status(500).json({
       success: false,
       error: error.message || "Failed to send email or save to DB",
