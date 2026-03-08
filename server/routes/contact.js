@@ -105,11 +105,12 @@ router.post("/", async (req, res) => {
     });
 
   } catch (error) {
-    logger.error("Contact API error", error);
+    logger.error("Contact API error", error.message || error.toString());
 
     return res.status(500).json({
       success: false,
-      error: "Failed to send email",
+      error: error.message || "Failed to send email or save to DB",
+      details: error.toString(),
     });
   }
 });
