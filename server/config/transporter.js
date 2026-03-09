@@ -2,28 +2,36 @@ import nodemailer from "nodemailer";
 import logger from "../utils/logger.js";
 import dotenv from "dotenv";
 dotenv.config();
-const maskedEmail = process.env.EMAIL_USER
-  ? process.env.EMAIL_USER.replace(/(.{3}).*(@.*)/, "$1***$2")
-  : "❌ NOT SET";
+let transporter = null;
 
-logger.info(`Initializing Gmail transporter (${maskedEmail})`);
+function getTransporter() {
+  if (!transporter) {
+    const maskedEmail = process.env.EMAIL_USER
+      ? process.env.EMAIL_USER.replace(/(.{3}).*(@.*)/, "$1***$2")
+      : "❌ NOT SET";
 
-const transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
-  },
-  connectionTimeout: 5000,
-});
+    logger.info(`Initializing Gmail transporter (${maskedEmail})`);
 
-// Verify transporter connection
-transporter.verify((error, success) => {
-  if (error) {
-    logger.error("❌ Email transporter verification failed:", error);
-  } else {
-    logger.info("✅ Email transporter is ready to send emails");
+    transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+      connectionTimeout: 10000,
+      greetingTimeout: 10000,
+      socketTimeout: 10000,
+    });
   }
-});
+  return transporter;
+}
 
-export default transporter;
+// Proxy that lazily creates the transporter on first use (e.g. .sendMail())
+// This ensures env vars from dotenv are loaded before the transporter is built.
+export default new Proxy({}, {
+  get(_, prop) {
+    const t = getTransporter();
+    const value = t[prop];
+    return typeof value === "function" ? value.bind(t) : value;
+  },
+});
