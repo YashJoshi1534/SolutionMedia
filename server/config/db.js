@@ -16,7 +16,7 @@ const connectDB = async () => {
 
         const conn = await mongoose.connect(process.env.MONGO_URI, {
             dbName: 'SolutionMedia',
-            serverSelectionTimeoutMS: 5000,
+            serverSelectionTimeoutMS: 5000, 
             bufferCommands: false,
         });
 
