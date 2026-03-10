@@ -1,8 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import DatePicker from 'react-datepicker';
+import TimezoneSelect from 'react-timezone-select';
+import { setHours, setMinutes } from 'date-fns';
+import "react-datepicker/dist/react-datepicker.css";
 import {
   Send, Mail, User, MessageSquare, CheckCircle, AlertCircle,
-  Loader2, X, Calendar, Clock, Sparkles, ArrowRight, MailCheck
+  Loader2, X, Calendar, Clock, Sparkles, ArrowRight, MailCheck, Globe
 } from 'lucide-react';
 
 const subjects = [
@@ -20,8 +24,9 @@ const ContactPopup = ({ isOpen, onClose }) => {
     email: '',
     subject: '',
     message: '',
-    preferredDate: '',
-    preferredTime: '',
+    date: null,
+    time: null,
+    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
   });
   const [status, setStatus] = useState('idle');
   const [errorMsg, setErrorMsg] = useState('');
@@ -50,17 +55,29 @@ const ContactPopup = ({ isOpen, onClose }) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
+  const handleDateChange = (date) => setFormData(prev => ({ ...prev, date }));
+  const handleTimeChange = (time) => setFormData(prev => ({ ...prev, time }));
+  const handleTimezoneChange = (timezone) => setFormData(prev => ({ ...prev, timezone: timezone.value }));
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setStatus('loading');
     setErrorMsg('');
+
+    // Prepare data for submission
+    const submissionData = {
+      ...formData,
+      preferredDate: formData.date ? formData.date.toISOString().split('T')[0] : '',
+      preferredTime: formData.time ? formData.time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '',
+      timezone: formData.timezone
+    };
 
     try {
       const apiUrl = import.meta.env.VITE_API_URL || 'https://solution-media.vercel.app';
       const res = await fetch(`${apiUrl}/api/contact`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(submissionData),
       });
 
       const data = await res.json();
@@ -69,8 +86,19 @@ const ContactPopup = ({ isOpen, onClose }) => {
         throw new Error(data.error || 'Something went wrong. Please try again.');
       }
 
-      setStatus('success');
-      setFormData({ name: '', email: '', subject: '', message: '', preferredDate: '', preferredTime: '' });
+      // Smooth transition to success
+      setTimeout(() => {
+        setStatus('success');
+        setFormData({ 
+          name: '', 
+          email: '', 
+          subject: '', 
+          message: '', 
+          date: null, 
+          time: null, 
+          timezone: Intl.DateTimeFormat().resolvedOptions().timeZone 
+        });
+      }, 300);
     } catch (err) {
       setErrorMsg(err.message);
       setStatus('error');
@@ -78,14 +106,9 @@ const ContactPopup = ({ isOpen, onClose }) => {
     }
   };
 
-  const getTomorrow = () => {
-    const d = new Date();
-    d.setDate(d.getDate() + 1);
-    return d.toISOString().split('T')[0];
-  };
-
-  const inputClasses =
-    'w-full bg-white/[0.04] backdrop-blur-sm border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-[#9945FF]/50 focus:border-[#9945FF]/50 transition-all duration-300 text-sm';
+  const inputClasses = useMemo(() => 
+    'w-full bg-white/[0.03] backdrop-blur-sm border border-white/[0.08] rounded-xl px-4 py-3 text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-[#9945FF]/40 focus:border-[#9945FF]/40 transition-all duration-300 text-sm will-change-transform',
+  []);
 
   return (
     <AnimatePresence>
@@ -94,125 +117,88 @@ const ContactPopup = ({ isOpen, onClose }) => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.25 }}
-          className="fixed inset-0 z-[100] flex items-center justify-center p-4"
+          transition={{ duration: 0.3 }}
+          className="fixed inset-0 z-[100] flex items-center justify-center p-4 lg:p-10"
           onClick={(e) => { if (e.target === e.currentTarget) handleClose(); }}
         >
           {/* Backdrop */}
-          <div className="absolute inset-0 bg-black/70 backdrop-blur-md" />
+          <div className="absolute inset-0 bg-black/80 backdrop-blur-xl" />
 
           <motion.div
-            initial={{ opacity: 0, scale: 0.9, y: 40 }}
+            initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.9, y: 40 }}
-            transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-            className="relative w-full max-w-lg bg-[#12121A] border border-white/10 rounded-3xl shadow-2xl"
+            exit={{ opacity: 0, scale: 0.95, y: 20 }}
+            transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+            className="relative w-full max-w-xl bg-[#0D0D12] border border-white/10 rounded-[2.5rem] shadow-2xl overflow-hidden will-change-transform"
           >
             {/* Decorative gradients */}
-            <div className="absolute top-0 right-0 w-48 h-48 bg-[#9945FF]/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
-            <div className="absolute bottom-0 left-0 w-40 h-40 bg-[#BE2F7B]/8 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2 pointer-events-none" />
+            <div className="absolute top-0 right-0 w-64 h-64 bg-[#9945FF]/15 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2 pointer-events-none" />
+            <div className="absolute bottom-0 left-0 w-64 h-64 bg-[#BE2F7B]/10 rounded-full blur-[100px] translate-y-1/2 -translate-x-1/2 pointer-events-none" />
 
             <AnimatePresence mode="wait">
               {status === 'success' ? (
                 /* ─── Success View ───── */
                 <motion.div
                   key="success"
-                  initial={{ opacity: 0, scale: 0.9 }}
+                  initial={{ opacity: 0, scale: 0.98 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
-                  transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-                  className="relative p-8 sm:p-10 text-center"
+                  exit={{ opacity: 0, scale: 0.98 }}
+                  transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                  className="relative p-10 text-center"
                 >
                   <button
                     onClick={handleClose}
-                    className="absolute top-4 right-4 w-9 h-9 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center text-white/40 hover:text-white transition-all duration-200 z-10"
-                    aria-label="Close"
+                    className="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center text-white/40 hover:text-white transition-all duration-300 z-10"
                   >
                     <X className="w-5 h-5" />
                   </button>
 
                   <motion.div
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    transition={{ delay: 0.15, type: 'spring', stiffness: 200, damping: 12 }}
-                    className="mx-auto mb-6 relative"
+                    initial={{ scale: 0.8, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ delay: 0.1, type: 'spring', stiffness: 200, damping: 15 }}
+                    className="mx-auto mb-8 relative w-24 h-24"
                   >
-                    <div className="w-20 h-20 rounded-full bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center mx-auto shadow-lg shadow-emerald-500/30">
-                      <CheckCircle className="w-10 h-10 text-white" />
+                    <div className="w-full h-full rounded-full bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center mx-auto shadow-2xl shadow-emerald-500/20">
+                      <CheckCircle className="w-12 h-12 text-white" />
                     </div>
-                    <motion.div
-                      initial={{ opacity: 0, scale: 0 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ delay: 0.4 }}
-                      className="absolute -top-2 -right-2"
-                    >
-                      <Sparkles className="w-6 h-6 text-[#C084FC]" />
-                    </motion.div>
-                    <motion.div
-                      initial={{ opacity: 0, scale: 0 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ delay: 0.55 }}
-                      className="absolute -bottom-1 -left-3"
-                    >
-                      <Sparkles className="w-5 h-5 text-emerald-400" />
-                    </motion.div>
+                    <Sparkles className="absolute -top-2 -right-2 w-8 h-8 text-[#C084FC] animate-pulse" />
                   </motion.div>
 
-                  <motion.h3
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.25 }}
-                    className="text-2xl font-extrabold text-white mb-2"
-                  >
-                    Message Sent Successfully!
-                  </motion.h3>
+                  <h3 className="text-3xl font-extrabold text-white mb-3">Confirmation Sent!</h3>
+                  <p className="text-white/40 text-base mb-10 max-w-sm mx-auto">
+                    We've received your request and a confirmation email is heading to your inbox right now.
+                  </p>
 
-                  <motion.p
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.35 }}
-                    className="text-white/50 text-sm mb-8 max-w-xs mx-auto"
-                  >
-                    Thank you for reaching out! We've sent you a confirmation email.
-                  </motion.p>
-
-                  <motion.div
-                    initial={{ opacity: 0, y: 15 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.45 }}
-                    className="space-y-3 mb-8"
-                  >
-                    <div className="flex items-center gap-3 p-3.5 rounded-xl bg-emerald-500/10 border border-emerald-500/15 text-left">
-                      <div className="w-9 h-9 rounded-lg bg-emerald-500/15 flex items-center justify-center shrink-0">
-                        <MailCheck className="w-4 h-4 text-emerald-400" />
+                  <div className="grid gap-4 mb-10 max-w-md mx-auto">
+                    <div className="flex items-center gap-4 p-4 rounded-2xl bg-emerald-500/5 border border-emerald-500/10 text-left">
+                      <div className="w-12 h-12 rounded-xl bg-emerald-500/10 flex items-center justify-center shrink-0">
+                        <MailCheck className="w-6 h-6 text-emerald-400" />
                       </div>
                       <div>
-                        <p className="text-sm font-semibold text-emerald-300">Confirmation Email Sent</p>
-                        <p className="text-xs text-emerald-400/60">Check your inbox for details</p>
+                        <p className="text-sm font-bold text-emerald-300">Check Your Inbox</p>
+                        <p className="text-xs text-emerald-400/50 leading-relaxed">System confirmed your strategy call request.</p>
                       </div>
                     </div>
 
-                    <div className="flex items-center gap-3 p-3.5 rounded-xl bg-[#9945FF]/10 border border-[#9945FF]/15 text-left">
-                      <div className="w-9 h-9 rounded-lg bg-[#9945FF]/15 flex items-center justify-center shrink-0">
-                        <Clock className="w-4 h-4 text-[#C084FC]" />
+                    <div className="flex items-center gap-4 p-4 rounded-2xl bg-[#9945FF]/5 border border-[#9945FF]/10 text-left">
+                      <div className="w-12 h-12 rounded-xl bg-[#9945FF]/10 flex items-center justify-center shrink-0">
+                        <Clock className="w-6 h-6 text-[#C084FC]" />
                       </div>
                       <div>
-                        <p className="text-sm font-semibold text-white">Response within 24 Hours</p>
-                        <p className="text-xs text-white/40">Our team will review and get back to you</p>
+                        <p className="text-sm font-bold text-white">Priority Response</p>
+                        <p className="text-xs text-white/40 leading-relaxed">Our strategists will reply within 12-24 hours.</p>
                       </div>
                     </div>
-                  </motion.div>
+                  </div>
 
-                  <motion.button
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.55 }}
+                  <button
                     onClick={handleClose}
-                    className="btn-primary inline-flex items-center gap-2 px-8 py-3 text-sm font-semibold group"
+                    className="btn-primary inline-flex items-center gap-3 px-10 py-4 text-base font-bold group rounded-2xl"
                   >
                     Got It
-                    <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
-                  </motion.button>
+                    <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  </button>
                 </motion.div>
               ) : (
                 /* ─── Form View ───── */
@@ -220,61 +206,59 @@ const ContactPopup = ({ isOpen, onClose }) => {
                   key="form"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  exit={{ opacity: 0, scale: 0.95 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.3 }}
                 >
-                  <div className="relative p-6 pb-0">
+                  <div className="relative p-8 pb-0">
                     <button
                       onClick={handleClose}
-                      className="absolute top-4 right-4 w-9 h-9 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center text-white/40 hover:text-white transition-all duration-200 z-10"
-                      aria-label="Close"
+                      className="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center text-white/40 hover:text-white transition-all duration-300 z-10"
                     >
                       <X className="w-5 h-5" />
                     </button>
 
-                    <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#9945FF]/10 border border-[#9945FF]/20 text-[#C084FC] font-medium text-xs mb-4">
-                      <span className="w-2 h-2 rounded-full bg-[#9945FF] animate-pulse" />
-                      Get In Touch
+                    <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-[#9945FF]/10 border border-[#9945FF]/20 text-[#C084FC] font-bold text-[10px] uppercase tracking-widest mb-4">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#9945FF] shadow-[0_0_10px_#9945FF]" />
+                      Direct Access
                     </div>
-                    <h2 className="text-2xl lg:text-3xl font-extrabold tracking-tight mb-1 text-white">
+                    <h2 className="text-3xl lg:text-4xl font-extrabold tracking-tight mb-2 text-white">
                       Let's Build Something{' '}
                       <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#9945FF] to-[#C084FC]">
-                        Amazing
+                        Elite
                       </span>
                     </h2>
-                    <p className="text-white/40 text-sm mb-2">
-                      Fill out the form and we'll get back to you within 24 hours.
+                    <p className="text-white/40 text-sm max-w-sm">
+                      Secure your strategy session with our senior content engineers.
                     </p>
                   </div>
 
-                  <form onSubmit={handleSubmit} className="relative p-6 pt-4 space-y-4">
+                  <form onSubmit={handleSubmit} className="p-8 pt-6 space-y-5">
                     <div className="grid sm:grid-cols-2 gap-4">
-                      <div>
-                        <label htmlFor="popup-name" className="block text-xs font-semibold text-white/70 mb-1.5">
-                          <User className="w-3.5 h-3.5 inline mr-1 opacity-60" />
+                      <div className="space-y-1.5">
+                        <label className="text-[11px] font-bold text-white/50 uppercase tracking-wider flex items-center gap-2 ml-1">
+                          <User size={12} className="text-[#9945FF]" />
                           Full Name
                         </label>
                         <input
-                          id="popup-name"
                           name="name"
                           type="text"
                           required
-                          placeholder="John Doe"
+                          placeholder="Your Name"
                           value={formData.name}
                           onChange={handleChange}
                           className={inputClasses}
                         />
                       </div>
-                      <div>
-                        <label htmlFor="popup-email" className="block text-xs font-semibold text-white/70 mb-1.5">
-                          <Mail className="w-3.5 h-3.5 inline mr-1 opacity-60" />
-                          Email Address
+                      <div className="space-y-1.5">
+                        <label className="text-[11px] font-bold text-white/50 uppercase tracking-wider flex items-center gap-2 ml-1">
+                          <Mail size={12} className="text-[#9945FF]" />
+                          Work Email
                         </label>
                         <input
-                          id="popup-email"
                           name="email"
                           type="email"
                           required
-                          placeholder="john@example.com"
+                          placeholder="name@company.com"
                           value={formData.email}
                           onChange={handleChange}
                           className={inputClasses}
@@ -282,71 +266,89 @@ const ContactPopup = ({ isOpen, onClose }) => {
                       </div>
                     </div>
 
-                    <div>
-                      <label htmlFor="popup-subject" className="block text-xs font-semibold text-white/70 mb-1.5">
-                        <MessageSquare className="w-3.5 h-3.5 inline mr-1 opacity-60" />
-                        What's this about?
+                    <div className="space-y-1.5">
+                      <label className="text-[11px] font-bold text-white/50 uppercase tracking-wider flex items-center gap-2 ml-1">
+                        <MessageSquare size={12} className="text-[#9945FF]" />
+                        Project Scope
                       </label>
-                      <select
-                        id="popup-subject"
-                        name="subject"
-                        required
-                        value={formData.subject}
-                        onChange={handleChange}
-                        className={`${inputClasses} appearance-none cursor-pointer`}
-                      >
-                        <option value="" disabled className="text-gray-900 bg-white">Select a topic</option>
-                        {subjects.map((s) => (
-                          <option key={s} value={s} className="text-gray-900 bg-white">{s}</option>
-                        ))}
-                      </select>
+                      <div className="relative">
+                        <select
+                          name="subject"
+                          required
+                          value={formData.subject}
+                          onChange={handleChange}
+                          className={`${inputClasses} appearance-none cursor-pointer pr-10`}
+                        >
+                          <option value="" disabled>Select a topic</option>
+                          {subjects.map((s) => (
+                            <option key={s} value={s}>{s}</option>
+                          ))}
+                        </select>
+                        <ArrowRight className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/20 rotate-90 pointer-events-none" />
+                      </div>
                     </div>
 
                     <div className="grid sm:grid-cols-2 gap-4">
-                      <div>
-                        <label htmlFor="popup-date" className="block text-xs font-semibold text-white/70 mb-1.5">
-                          <Calendar className="w-3.5 h-3.5 inline mr-1 opacity-60" />
-                          Preferred Date
+                      <div className="space-y-1.5">
+                        <label className="text-[11px] font-bold text-white/50 uppercase tracking-wider flex items-center gap-2 ml-1">
+                          <Calendar size={12} className="text-[#9945FF]" />
+                          Date
                         </label>
-                        <input
-                          id="popup-date"
-                          name="preferredDate"
-                          type="date"
-                          min={getTomorrow()}
-                          value={formData.preferredDate}
-                          onChange={handleChange}
-                          onClick={(e) => e.target.showPicker && e.target.showPicker()}
-                          className={inputClasses}
-                        />
+                        <div className="relative">
+                          <DatePicker
+                            selected={formData.date}
+                            onChange={handleDateChange}
+                            minDate={new Date()}
+                            placeholderText="Select Date"
+                            className={inputClasses}
+                            dateFormat="MMMM d, yyyy"
+                            required
+                          />
+                        </div>
                       </div>
-                      <div>
-                        <label htmlFor="popup-time" className="block text-xs font-semibold text-white/70 mb-1.5">
-                          <Clock className="w-3.5 h-3.5 inline mr-1 opacity-60" />
-                          Preferred Time
+                      <div className="space-y-1.5">
+                        <label className="text-[11px] font-bold text-white/50 uppercase tracking-wider flex items-center gap-2 ml-1">
+                          <Clock size={12} className="text-[#9945FF]" />
+                          Time
                         </label>
-                        <input
-                          id="popup-time"
-                          name="preferredTime"
-                          type="time"
-                          value={formData.preferredTime}
-                          onChange={handleChange}
-                          onClick={(e) => e.target.showPicker && e.target.showPicker()}
+                        <DatePicker
+                          selected={formData.time}
+                          onChange={handleTimeChange}
+                          showTimeSelect
+                          showTimeSelectOnly
+                          timeIntervals={15}
+                          timeCaption="Time"
+                          dateFormat="h:mm aa"
+                          placeholderText="Select Time"
                           className={inputClasses}
+                          required
                         />
                       </div>
                     </div>
 
-                    <div>
-                      <label htmlFor="popup-message" className="block text-xs font-semibold text-white/70 mb-1.5">
-                        <MessageSquare className="w-3.5 h-3.5 inline mr-1 opacity-60" />
-                        Your Message
+                    <div className="space-y-1.5">
+                      <label className="text-[11px] font-bold text-white/50 uppercase tracking-wider flex items-center gap-2 ml-1">
+                        <Globe size={12} className="text-[#9945FF]" />
+                        Timezone
+                      </label>
+                      <TimezoneSelect
+                        value={formData.timezone}
+                        onChange={handleTimezoneChange}
+                        classNamePrefix="tz-select"
+                        placeholder="Select Timezone"
+                      />
+                    </div>
+
+                    <div className="space-y-1.5">
+                      <label className="text-[11px] font-bold text-white/50 uppercase tracking-wider flex items-center gap-2 ml-1">
+                        <MessageSquare size={12} className="text-[#9945FF]" />
+                        Your Vision
                       </label>
                       <textarea
-                        id="popup-message"
                         name="message"
                         required
-                        rows={4}
-                        placeholder="Tell us about your project, goals, or any questions you have..."
+                        rows={3}
+                        placeholder="Briefly describe your goals..."
                         value={formData.message}
                         onChange={handleChange}
                         className={`${inputClasses} resize-none`}
@@ -356,17 +358,17 @@ const ContactPopup = ({ isOpen, onClose }) => {
                     <button
                       type="submit"
                       disabled={status === 'loading'}
-                      className="btn-primary w-full inline-flex items-center justify-center gap-2.5 px-8 py-3.5 text-sm font-semibold disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:scale-100 group"
+                      className="btn-primary w-full inline-flex items-center justify-center gap-3 px-8 py-4 text-base font-bold disabled:opacity-60 disabled:cursor-not-allowed group rounded-2xl shadow-xl shadow-[#9945FF]/10"
                     >
                       {status === 'loading' ? (
                         <>
-                          <Loader2 className="w-4 h-4 animate-spin" />
-                          Sending...
+                          <Loader2 className="w-5 h-5 animate-spin" />
+                          Processing...
                         </>
                       ) : (
                         <>
-                          Send Message
-                          <Send className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                          Book My Free Strategy Call
+                          <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                         </>
                       )}
                     </button>
@@ -377,10 +379,10 @@ const ContactPopup = ({ isOpen, onClose }) => {
                           initial={{ opacity: 0, y: 10 }}
                           animate={{ opacity: 1, y: 0 }}
                           exit={{ opacity: 0, y: -10 }}
-                          className="flex items-center gap-2 text-red-400 bg-red-500/10 border border-red-500/15 px-4 py-3 rounded-xl"
+                          className="flex items-center gap-3 text-red-400 bg-red-500/10 border border-red-500/20 px-4 py-3.5 rounded-2xl"
                         >
-                          <AlertCircle className="w-5 h-5 shrink-0" />
-                          <span className="font-medium text-sm">{errorMsg}</span>
+                          <AlertCircle size={18} className="shrink-0" />
+                          <span className="font-bold text-xs">{errorMsg}</span>
                         </motion.div>
                       )}
                     </AnimatePresence>

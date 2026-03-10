@@ -62,3 +62,79 @@ a, button {
   background-size: 200% 100%;
   animation: gradientSlide 3s ease-in-out infinite;
 }
+
+/* Premium DatePicker & Timezone Styles */
+.react-datepicker {
+  @apply bg-[#1A1A24] border border-white/10 rounded-2xl font-sans text-white shadow-2xl !important;
+}
+
+.react-datepicker__header {
+  @apply bg-[#12121A] border-b border-white/10 rounded-t-2xl !important;
+}
+
+.react-datepicker__current-month, 
+.react-datepicker-time__header,
+.react-datepicker__day-name {
+  @apply text-white/80 !important;
+}
+
+.react-datepicker__day {
+  @apply text-white/60 hover:bg-[#9945FF]/20 hover:text-white rounded-lg transition-colors !important;
+}
+
+.react-datepicker__day--selected,
+.react-datepicker__day--keyboard-selected {
+  @apply bg-[#9945FF] text-white !important;
+}
+
+.react-datepicker__time-container {
+  @apply border-l border-white/10 !important;
+}
+
+.react-datepicker__time {
+  @apply bg-[#1A1A24] !important;
+}
+
+.react-datepicker__time-box {
+  @apply rounded-r-2xl !important;
+}
+
+.react-datepicker__time-list-item--selected {
+  @apply bg-[#9945FF] !important;
+}
+
+.react-datepicker__navigation--next,
+.react-datepicker__navigation--previous {
+  @apply mt-2 !important;
+}
+
+/* Timezone Select Custom Styles */
+.tz-select__control {
+  @apply bg-white/[0.03] border-white/[0.08] hover:border-[#9945FF]/50 rounded-xl min-h-[52px] !important;
+}
+
+.tz-select__menu {
+  @apply bg-[#1A1A24] border border-white/10 !important;
+}
+
+.tz-select__option--is-focused {
+  @apply bg-[#9945FF]/20 !important;
+}
+
+.tz-select__option--is-selected {
+  @apply bg-[#9945FF] !important;
+}
+
+.tz-select__single-value {
+  @apply text-white !important;
+}
+
+/* Performance Optimizations */
+.will-change-transform {
+  will-change: transform, opacity;
+}
+
+.smooth-transition {
+  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+

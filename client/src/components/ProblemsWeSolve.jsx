@@ -1,115 +1,134 @@
-import React from 'react';
-import { Lightbulb, Keyboard, Palette, Film, Briefcase, Headphones } from 'lucide-react';
-import { motion } from 'framer-motion';
+import React, { useRef } from 'react';
+import { Timer, CalendarRange, Banknote, Flame, TrendingUp, Layers } from 'lucide-react';
+import { motion, useScroll, useTransform, useInView } from 'framer-motion';
 
-const Burst = ({ top, left, right, bottom, rotation, delay = 0.3 }) => (
-  <motion.div 
-    initial={{ opacity: 0, scale: 0 }}
-    whileInView={{ opacity: 1, scale: 1 }}
-    viewport={{ once: true }}
-    transition={{ duration: 0.5, delay, type: "spring" }}
-    className="absolute w-12 h-12 pointer-events-none z-10"
-    style={{ 
-      top: top || 'auto', 
-      left: left || 'auto', 
-      right: right || 'auto', 
-      bottom: bottom || 'auto', 
-      transform: `rotate(${rotation}deg)` 
-    }}
-  >
-    {/* Clean hand-drawn style SVG burst radiating to the top-left */}
-    <svg viewBox="0 0 40 40" className="w-full h-full drop-shadow-[0_0_8px_rgba(251,191,36,0.6)]">
-      <path 
-        d="M18 18 L6 6 M14 22 L2 22 M22 14 L22 2" 
-        stroke="#FBBF24" 
-        strokeWidth="3.5" 
-        strokeLinecap="round" 
-        strokeLinejoin="round" 
-      />
-    </svg>
-  </motion.div>
-);
+const ConnectorLine = ({ direction, delay = 0 }) => {
+  const controls = {
+    left: "M 100 0 Q 50 0 0 50",
+    right: "M 0 0 Q 50 0 100 50"
+  };
 
-const Card = ({ icon: Icon, text, rotationClass, translateClass, delay }) => {
+  return (
+    <div className={`absolute hidden lg:block pointer-events-none opacity-20 ${direction === 'left' ? '-right-16 top-1/2' : '-left-16 top-1/2'}`}>
+      <svg width="80" height="40" viewBox="0 0 100 50" fill="none">
+        <motion.path
+          initial={{ pathLength: 0 }}
+          whileInView={{ pathLength: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1, delay }}
+          d={controls[direction]}
+          stroke="url(#purpleGradient)"
+          strokeWidth="2"
+          strokeDasharray="4 4"
+        />
+        <defs>
+          <linearGradient id="purpleGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="#9945FF" />
+            <stop offset="100%" stopColor="#C084FC" />
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
+  );
+};
+
+const Card = ({ icon: Icon, title, description, index }) => {
+  const isLeft = index < 3;
+  
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.9, y: 20 }}
-      whileInView={{ opacity: 1, scale: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.2 }}
-      transition={{ duration: 0.5, delay }}
-      className={`bg-[#0A0A0F]/80 backdrop-blur-sm border border-white/[0.08] lg:border-white/[0.05] rounded-2xl p-6 sm:p-8 flex flex-col items-center justify-center gap-4 w-full sm:max-w-[280px] mx-auto shadow-[0_0_40px_-15px_rgba(0,0,0,0.5)] ${rotationClass} ${translateClass} hover:rotate-0 hover:scale-105 hover:border-[#9945FF]/40 hover:shadow-[0_0_30px_-10px_rgba(153,69,255,0.25)] transition-all duration-300 cursor-default group`}
+      initial={{ opacity: 0, x: isLeft ? -30 : 30, y: 20 }}
+      whileInView={{ opacity: 1, x: 0, y: 0 }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ 
+        duration: 0.8, 
+        delay: index * 0.1, 
+        ease: [0.16, 1, 0.3, 1] 
+      }}
+      className="group relative will-change-transform"
     >
-      <div className="text-[#C084FC] group-hover:text-[#9945FF] transition-colors drop-shadow-[0_0_15px_rgba(153,69,255,0.4)]">
-        <Icon className="w-10 h-10 sm:w-12 sm:h-12" strokeWidth={1.5} />
+      <div className="absolute -inset-[1px] bg-gradient-to-r from-[#9945FF]/40 to-[#C084FC]/40 rounded-2xl blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+      
+      <div className="relative h-full bg-[#0A0A0F]/60 backdrop-blur-md border border-white/[0.08] group-hover:border-[#9945FF]/50 rounded-2xl p-6 flex flex-col items-center text-center transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]">
+        <div className="mb-4 p-3 bg-white/[0.03] rounded-xl border border-white/[0.05] group-hover:scale-110 group-hover:bg-[#9945FF]/10 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]">
+          <Icon className="w-8 h-8 text-[#C084FC] group-hover:text-[#9945FF]" strokeWidth={1.5} />
+        </div>
+        <h3 className="text-white font-semibold text-lg mb-2">{title}</h3>
+        <p className="text-white/50 text-sm leading-relaxed">{description}</p>
       </div>
-      <span className="text-white/90 font-medium text-sm sm:text-base tracking-wide text-center">{text}</span>
+
+      <ConnectorLine direction={isLeft ? 'left' : 'right'} delay={0.4 + (index * 0.1)} />
     </motion.div>
   );
 };
 
 const ProblemsWeSolve = () => {
+  const leftCards = [
+    { icon: Timer, title: "No Time to Create Content", description: "You're scaling fast, but content creation is slowing you down." },
+    { icon: CalendarRange, title: "Inconsistent Posting", description: "Your brand fades away when you're too busy to stay active." },
+    { icon: Banknote, title: "Expensive Content Teams", description: "Full-time hires and overhead costs are eating into your margins." }
+  ];
+
+  const rightCards = [
+    { icon: Flame, title: "Content Creation Burnout", description: "Struggling to keep up with the relentless demand for high-quality posts." },
+    { icon: TrendingUp, title: "Low Social Media Visibility", description: "Great products falling flat due to lack of strategic content reach." },
+    { icon: Layers, title: "Production Bottlenecks", description: "Waiting days for simple edits. Speed is your biggest missing asset." }
+  ];
+
   return (
     <section id="problems" className="py-32 relative bg-[#050508] overflow-hidden">
-      {/* Grid Pattern Background */}
+      {/* Subtle Grid Background */}
       <div 
-        className="absolute inset-0 opacity-[0.03] pointer-events-none" 
+        className="absolute inset-0 opacity-[0.05] pointer-events-none" 
         style={{
-          backgroundImage: `linear-gradient(to right, #ffffff 1px, transparent 1px), linear-gradient(to bottom, #ffffff 1px, transparent 1px)`,
-          backgroundSize: '48px 48px'
+          backgroundImage: `
+            linear-gradient(to right, #444 1px, transparent 1px),
+            linear-gradient(to bottom, #444 1px, transparent 1px)
+          `,
+          backgroundSize: '80px 80px',
+          maskImage: 'radial-gradient(circle at center, black, transparent 80%)'
         }}
       />
+
+      {/* Background Glows */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#9945FF]/5 rounded-full blur-[120px] pointer-events-none" />
       
-      {/* Ambient glows behind cards */}
-      <div className="absolute top-[20%] left-[-10%] w-[500px] h-[500px] bg-[#9945FF]/5 rounded-full blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-[20%] right-[-10%] w-[500px] h-[500px] bg-[#7B2FBE]/5 rounded-full blur-[120px] pointer-events-none" />
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col items-center relative z-10">
-        
-        {/* Mobile Title */}
-        <div className="lg:hidden relative text-center mb-16 z-10 w-full">
-          <Burst top="-1.5rem" left="1rem" rotation={0} delay={0.2} />
-          <Burst top="-1.5rem" right="1rem" rotation={90} delay={0.4} />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 lg:gap-16 items-center">
           
-          <h2 className="text-4xl sm:text-5xl font-extrabold tracking-tight mb-4">
-            <span className="text-white">Problems </span>
-            <span className="text-[#FBBF24]">we solve</span>
-          </h2>
-          <p className="text-white/70 text-base max-w-[280px] mx-auto">
-            Think of an in house content team, that you don't have to manage.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-0 w-full lg:items-center relative">
-          
-          {/* Left Column Cards */}
-          <div className="flex flex-col gap-6 sm:gap-8 lg:gap-20">
-            <Card icon={Lightbulb} text="Lead Creatives" rotationClass="lg:-rotate-6" translateClass="lg:translate-x-4" delay={0.2} />
-            <Card icon={Keyboard} text="Content Writers" rotationClass="lg:-rotate-2" translateClass="lg:-translate-x-8" delay={0.3} />
-            <Card icon={Palette} text="Designers" rotationClass="lg:rotate-3" translateClass="lg:translate-x-8" delay={0.4} />
+          {/* Left Side Cards */}
+          <div className="order-2 lg:order-1 flex flex-col gap-8">
+            {leftCards.map((card, idx) => (
+              <Card key={idx} {...card} index={idx} />
+            ))}
           </div>
 
-          {/* Center Column Title (Desktop Only) */}
-          <div className="hidden lg:block relative text-center px-4 w-full self-center">
-            {/* Bursts slightly offset around the large title */}
-            <Burst top="-3rem" left="-2rem" rotation={0} delay={0.5} />
-            <Burst top="-3rem" right="-2rem" rotation={90} delay={0.6} />
-            <Burst bottom="-2.5rem" right="-2rem" rotation={180} delay={0.7} />
-            <Burst bottom="-2.5rem" left="-2rem" rotation={270} delay={0.8} />
-            
-            <h2 className="text-5xl lg:text-6xl xl:text-7xl font-extrabold tracking-tight mb-6">
-              <span className="text-white">Problems </span>
-              <span className="text-[#FBBF24]">we solve</span>
-            </h2>
-            <p className="text-white/70 text-lg xl:text-xl max-w-sm mx-auto leading-relaxed">
-              Think of an in house content team, that you don't have to manage.
-            </p>
+          {/* Center Content */}
+          <div className="order-1 lg:order-2 text-center flex flex-col items-center justify-center py-12">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+            >
+              <h2 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight mb-6">
+                <span className="text-white block">Why Most Businesses</span>
+                <span className="bg-gradient-to-r from-[#FBBF24] via-[#F59E0B] to-[#D97706] bg-clip-text text-transparent">
+                  Struggle With Content
+                </span>
+              </h2>
+              <div className="h-1 w-24 bg-gradient-to-r from-[#9945FF] to-[#C084FC] mx-auto rounded-full mb-8" />
+              <p className="text-white/60 text-lg sm:text-xl max-w-xs mx-auto leading-relaxed">
+                We remove the content production friction so you can focus on building your vision.
+              </p>
+            </motion.div>
           </div>
 
-          {/* Right Column Cards */}
-          <div className="flex flex-col gap-6 sm:gap-8 lg:gap-20 lg:mt-0 mt-6 sm:mt-8">
-            <Card icon={Film} text="World-class Editors" rotationClass="lg:rotate-6" translateClass="lg:-translate-x-4" delay={0.5} />
-            <Card icon={Briefcase} text="Project Managers" rotationClass="lg:rotate-2" translateClass="lg:translate-x-8" delay={0.6} />
-            <Card icon={Headphones} text="Virtual Assistants" rotationClass="lg:-rotate-3" translateClass="lg:-translate-x-8" delay={0.7} />
+          {/* Right Side Cards */}
+          <div className="order-3 flex flex-col gap-8">
+            {rightCards.map((card, idx) => (
+              <Card key={idx + 3} {...card} index={idx + 3} />
+            ))}
           </div>
 
         </div>
@@ -119,3 +138,4 @@ const ProblemsWeSolve = () => {
 };
 
 export default ProblemsWeSolve;
+

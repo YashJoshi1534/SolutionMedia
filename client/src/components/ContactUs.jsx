@@ -1,6 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Send, Mail, User, MessageSquare, CheckCircle, AlertCircle, Loader2, Phone, MapPin } from 'lucide-react';
+import DatePicker from 'react-datepicker';
+import TimezoneSelect from 'react-timezone-select';
+import "react-datepicker/dist/react-datepicker.css";
+import { 
+  Send, Mail, User, MessageSquare, CheckCircle, AlertCircle, 
+  Loader2, Phone, MapPin, Calendar, Clock, Globe, ArrowRight 
+} from 'lucide-react';
 
 const subjects = [
   'General Inquiry',
@@ -16,6 +22,9 @@ const ContactUs = () => {
     email: '',
     subject: '',
     message: '',
+    date: null,
+    time: null,
+    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
   });
   const [status, setStatus] = useState('idle'); // idle | loading | success | error
   const [errorMsg, setErrorMsg] = useState('');
@@ -24,53 +33,58 @@ const ContactUs = () => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  setStatus("loading");
-  setErrorMsg("");
+  const handleDateChange = (date) => setFormData(prev => ({ ...prev, date }));
+  const handleTimeChange = (time) => setFormData(prev => ({ ...prev, time }));
+  const handleTimezoneChange = (timezone) => setFormData(prev => ({ ...prev, timezone: timezone.value }));
 
-  try {
-    const apiUrl = import.meta.env.VITE_API_URL || 'https://solution-media.vercel.app';
-    const res = await fetch(`${apiUrl}/api/contact`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    });
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setStatus("loading");
+    setErrorMsg("");
 
-    const text = await res.text(); // read raw response
-    console.log("SERVER RESPONSE:", text);
+    const submissionData = {
+      ...formData,
+      preferredDate: formData.date ? formData.date.toISOString().split('T')[0] : '',
+      preferredTime: formData.time ? formData.time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '',
+      timezone: formData.timezone
+    };
 
-    let data;
     try {
-      data = JSON.parse(text);
-    } catch {
-      throw new Error("Server returned non-JSON response");
+      const apiUrl = import.meta.env.VITE_API_URL || 'https://solution-media.vercel.app';
+      const res = await fetch(`${apiUrl}/api/contact`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(submissionData),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || "Something went wrong.");
+      }
+
+      setStatus("success");
+      setFormData({
+        name: "",
+        email: "",
+        subject: "",
+        message: "",
+        date: null,
+        time: null,
+        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
+      });
+
+      setTimeout(() => setStatus("idle"), 5000);
+    } catch (err) {
+      setErrorMsg(err.message);
+      setStatus("error");
+      setTimeout(() => setStatus("idle"), 5000);
     }
+  };
 
-    if (!res.ok) {
-      throw new Error(data.error || "Something went wrong.");
-    }
-
-    setStatus("success");
-    setFormData({
-      name: "",
-      email: "",
-      subject: "",
-      message: "",
-    });
-
-    setTimeout(() => setStatus("idle"), 5000);
-  } catch (err) {
-    console.error(err);
-    setErrorMsg(err.message);
-    setStatus("error");
-    setTimeout(() => setStatus("idle"), 5000);
-  }
-};
-  const inputClasses =
-    'w-full bg-primary-bg/60 backdrop-blur-sm border border-secondary-bg/40 rounded-xl px-4 py-3.5 text-dark-green placeholder:text-dark-green/40 focus:outline-none focus:ring-2 focus:ring-accent-orange/50 focus:border-accent-orange/50 transition-all duration-300';
+  const inputClasses = useMemo(() => 
+    'w-full bg-primary-bg/60 backdrop-blur-md border border-secondary-bg/40 rounded-xl px-4 py-3.5 text-dark-green placeholder:text-dark-green/40 focus:outline-none focus:ring-2 focus:ring-accent-orange/50 focus:border-accent-orange/50 transition-all duration-300 will-change-transform',
+  []);
 
   return (
     <section id="contact" className="relative py-24 lg:py-32 overflow-hidden">
@@ -81,7 +95,6 @@ const handleSubmit = async (e) => {
       </div>
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -93,19 +106,18 @@ const handleSubmit = async (e) => {
             <span className="w-2 h-2 rounded-full bg-accent-orange animate-pulse"></span>
             Get In Touch
           </div>
-          <h2 className="text-4xl lg:text-5xl font-extrabold tracking-tight mb-4">
+          <h2 className="text-4xl lg:text-5xl font-extrabold tracking-tight mb-4 text-white">
             Let's Build Something{' '}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent-orange to-[#ff8c42]">
               Amazing
             </span>
           </h2>
           <p className="text-lg text-dark-green/70 max-w-2xl mx-auto">
-            Have a project in mind or want to learn more about our AI-powered content systems? Drop us a message and we'll get back to you within 24 hours.
+            Secure your strategy session with our senior content engineers.
           </p>
         </motion.div>
 
         <div className="grid lg:grid-cols-5 gap-10 lg:gap-14 items-start">
-          {/* Contact Info Cards */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -113,11 +125,9 @@ const handleSubmit = async (e) => {
             transition={{ duration: 0.7, delay: 0.1 }}
             className="lg:col-span-2 space-y-6"
           >
-            {/* Info Card */}
             <div className="bg-dark-green rounded-2xl p-8 relative overflow-hidden shadow-xl">
               <div className="absolute top-0 right-0 w-40 h-40 bg-accent-orange/15 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
-              <div className="absolute bottom-0 left-0 w-32 h-32 bg-secondary-bg/10 rounded-full blur-2xl translate-y-1/2 -translate-x-1/2"></div>
-
+              
               <h3 className="text-2xl font-bold text-primary-bg mb-2 relative z-10">
                 Contact Information
               </h3>
@@ -138,18 +148,6 @@ const handleSubmit = async (e) => {
                   </div>
                 </a>
 
-                <a href="tel:+911234567890" className="flex items-center gap-4 group">
-                  <div className="w-11 h-11 rounded-xl bg-accent-orange/20 flex justify-center items-center group-hover:bg-accent-orange/30 transition-colors">
-                    <Phone className="w-5 h-5 text-accent-orange" />
-                  </div>
-                  <div>
-                    <p className="text-primary-bg/50 text-xs font-medium uppercase tracking-wider">Phone</p>
-                    <p className="text-primary-bg font-medium group-hover:text-accent-orange transition-colors">
-                      +91 12345 67890
-                    </p>
-                  </div>
-                </a>
-
                 <div className="flex items-center gap-4">
                   <div className="w-11 h-11 rounded-xl bg-accent-orange/20 flex justify-center items-center">
                     <MapPin className="w-5 h-5 text-accent-orange" />
@@ -160,16 +158,8 @@ const handleSubmit = async (e) => {
                   </div>
                 </div>
               </div>
-
-              {/* Decorative dots */}
-              <div className="absolute bottom-6 right-6 grid grid-cols-3 gap-2 opacity-20">
-                {[...Array(9)].map((_, i) => (
-                  <div key={i} className="w-2 h-2 rounded-full bg-primary-bg"></div>
-                ))}
-              </div>
             </div>
 
-            {/* Quick Response Badge */}
             <motion.div
               initial={{ opacity: 0, y: 15 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -187,7 +177,6 @@ const handleSubmit = async (e) => {
             </motion.div>
           </motion.div>
 
-          {/* Contact Form */}
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -197,39 +186,34 @@ const handleSubmit = async (e) => {
           >
             <form
               onSubmit={handleSubmit}
-              className="bg-secondary-bg/10 backdrop-blur-md border border-secondary-bg/30 rounded-2xl p-8 lg:p-10 shadow-lg"
+              className="bg-secondary-bg/10 backdrop-blur-md border border-secondary-bg/30 rounded-2xl p-8 lg:p-10 shadow-lg space-y-5"
             >
-              <div className="grid sm:grid-cols-2 gap-5 mb-5">
-                {/* Name */}
-                <div>
-                  <label htmlFor="contact-name" className="block text-sm font-semibold text-dark-green mb-2">
-                    <User className="w-4 h-4 inline mr-1.5 opacity-60" />
+              <div className="grid sm:grid-cols-2 gap-5">
+                <div className="space-y-1.5">
+                  <label className="text-[11px] font-bold text-dark-green/50 uppercase tracking-wider flex items-center gap-2 ml-1">
+                    <User size={12} className="text-accent-orange" />
                     Full Name
                   </label>
                   <input
-                    id="contact-name"
                     name="name"
                     type="text"
                     required
-                    placeholder="John Doe"
+                    placeholder="Your Name"
                     value={formData.name}
                     onChange={handleChange}
                     className={inputClasses}
                   />
                 </div>
-
-                {/* Email */}
-                <div>
-                  <label htmlFor="contact-email" className="block text-sm font-semibold text-dark-green mb-2">
-                    <Mail className="w-4 h-4 inline mr-1.5 opacity-60" />
-                    Email Address
+                <div className="space-y-1.5">
+                  <label className="text-[11px] font-bold text-dark-green/50 uppercase tracking-wider flex items-center gap-2 ml-1">
+                    <Mail size={12} className="text-accent-orange" />
+                    Email
                   </label>
                   <input
-                    id="contact-email"
                     name="email"
                     type="email"
                     required
-                    placeholder="john@example.com"
+                    placeholder="name@company.com"
                     value={formData.email}
                     onChange={handleChange}
                     className={inputClasses}
@@ -237,54 +221,97 @@ const handleSubmit = async (e) => {
                 </div>
               </div>
 
-              {/* Subject */}
-              <div className="mb-5">
-                <label htmlFor="contact-subject" className="block text-sm font-semibold text-dark-green mb-2">
-                  <MessageSquare className="w-4 h-4 inline mr-1.5 opacity-60" />
+              <div className="space-y-1.5">
+                <label className="text-[11px] font-bold text-dark-green/50 uppercase tracking-wider flex items-center gap-2 ml-1">
+                  <MessageSquare size={12} className="text-accent-orange" />
                   What's this about?
                 </label>
-                <select
-                  id="contact-subject"
-                  name="subject"
-                  required
-                  value={formData.subject}
-                  onChange={handleChange}
-                  className={`${inputClasses} appearance-none cursor-pointer`}
-                >
-                  <option value="" disabled>
-                    Select a topic
-                  </option>
-                  {subjects.map((s) => (
-                    <option key={s} value={s}>
-                      {s}
-                    </option>
-                  ))}
-                </select>
+                <div className="relative">
+                  <select
+                    name="subject"
+                    required
+                    value={formData.subject}
+                    onChange={handleChange}
+                    className={`${inputClasses} appearance-none cursor-pointer pr-10`}
+                  >
+                    <option value="" disabled>Select a topic</option>
+                    {subjects.map((s) => (
+                      <option key={s} value={s}>{s}</option>
+                    ))}
+                  </select>
+                  <ArrowRight className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/20 rotate-90 pointer-events-none" />
+                </div>
               </div>
 
-              {/* Message */}
-              <div className="mb-8">
-                <label htmlFor="contact-message" className="block text-sm font-semibold text-dark-green mb-2">
-                  <MessageSquare className="w-4 h-4 inline mr-1.5 opacity-60" />
-                  Your Message
+              <div className="grid sm:grid-cols-2 gap-5">
+                <div className="space-y-1.5">
+                  <label className="text-[11px] font-bold text-dark-green/50 uppercase tracking-wider flex items-center gap-2 ml-1">
+                    <Calendar size={12} className="text-accent-orange" />
+                    Date
+                  </label>
+                  <DatePicker
+                    selected={formData.date}
+                    onChange={handleDateChange}
+                    minDate={new Date()}
+                    placeholderText="Select Date"
+                    className={inputClasses}
+                    dateFormat="MMMM d, yyyy"
+                    required
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="text-[11px] font-bold text-dark-green/50 uppercase tracking-wider flex items-center gap-2 ml-1">
+                    <Clock size={12} className="text-accent-orange" />
+                    Time
+                  </label>
+                  <DatePicker
+                    selected={formData.time}
+                    onChange={handleTimeChange}
+                    showTimeSelect
+                    showTimeSelectOnly
+                    timeIntervals={15}
+                    timeCaption="Time"
+                    dateFormat="h:mm aa"
+                    placeholderText="Select Time"
+                    className={inputClasses}
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="text-[11px] font-bold text-dark-green/50 uppercase tracking-wider flex items-center gap-2 ml-1">
+                  <Globe size={12} className="text-accent-orange" />
+                  Timezone
+                </label>
+                <TimezoneSelect
+                  value={formData.timezone}
+                  onChange={handleTimezoneChange}
+                  classNamePrefix="tz-select"
+                  placeholder="Select Timezone"
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="text-[11px] font-bold text-dark-green/50 uppercase tracking-wider flex items-center gap-2 ml-1">
+                  <MessageSquare size={12} className="text-accent-orange" />
+                  Message
                 </label>
                 <textarea
-                  id="contact-message"
                   name="message"
                   required
-                  rows={5}
-                  placeholder="Tell us about your project, goals, or any questions you have..."
+                  rows={4}
+                  placeholder="Tell us about your project..."
                   value={formData.message}
                   onChange={handleChange}
                   className={`${inputClasses} resize-none`}
                 />
               </div>
 
-              {/* Submit Button */}
               <button
-               type="submit"
+                type="submit"
                 disabled={status === 'loading'}
-                className="btn-primary w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-10 py-4 text-base disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:scale-100 group"
+                className="btn-primary w-full sm:w-auto inline-flex items-center justify-center gap-3 px-10 py-4 text-base font-bold transition-all duration-300 disabled:opacity-60 disabled:cursor-not-allowed group shadow-xl shadow-accent-orange/20"
               >
                 {status === 'loading' ? (
                   <>
@@ -293,23 +320,22 @@ const handleSubmit = async (e) => {
                   </>
                 ) : (
                   <>
-                    Send Message
-                    <Send className="w-5 h-5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                    Book My Free Strategy Call
+                    <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                   </>
                 )}
               </button>
 
-              {/* Status Messages */}
               <AnimatePresence mode="wait">
                 {status === 'success' && (
                   <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -10 }}
-                    className="mt-5 flex items-center gap-2 text-emerald-600 bg-emerald-50 dark:bg-emerald-900/20 dark:text-emerald-400 px-4 py-3 rounded-xl"
+                    className="mt-5 flex items-center gap-3 text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-4 py-4 rounded-xl"
                   >
-                    <CheckCircle className="w-5 h-5 shrink-0" />
-                    <span className="font-medium text-sm">Message sent successfully! We'll get back to you soon.</span>
+                    <CheckCircle className="w-6 h-6 shrink-0" />
+                    <span className="font-bold text-sm text-white">Message sent! We'll be in touch.</span>
                   </motion.div>
                 )}
                 {status === 'error' && (
@@ -317,10 +343,10 @@ const handleSubmit = async (e) => {
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -10 }}
-                    className="mt-5 flex items-center gap-2 text-red-600 bg-red-50 dark:bg-red-900/20 dark:text-red-400 px-4 py-3 rounded-xl"
+                    className="mt-5 flex items-center gap-3 text-red-400 bg-red-500/10 border border-red-500/20 px-4 py-4 rounded-xl"
                   >
-                    <AlertCircle className="w-5 h-5 shrink-0" />
-                    <span className="font-medium text-sm">{errorMsg}</span>
+                    <AlertCircle className="w-6 h-6 shrink-0" />
+                    <span className="font-bold text-sm text-white">{errorMsg}</span>
                   </motion.div>
                 )}
               </AnimatePresence>
