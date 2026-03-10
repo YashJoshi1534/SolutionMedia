@@ -88,19 +88,23 @@ a, button {
 }
 
 .react-datepicker__time-container {
-  @apply border-l border-white/10 !important;
+  @apply border-l border-white/10 bg-[#1A1A24] !important;
 }
 
 .react-datepicker__time {
-  @apply bg-[#1A1A24] !important;
+  @apply bg-[#1A1A24] rounded-r-2xl !important;
 }
 
 .react-datepicker__time-box {
   @apply rounded-r-2xl !important;
 }
 
+.react-datepicker__time-list-item {
+  @apply text-white/60 hover:bg-[#9945FF]/20 hover:text-white transition-colors !important;
+}
+
 .react-datepicker__time-list-item--selected {
-  @apply bg-[#9945FF] !important;
+  @apply bg-[#9945FF] text-white !important;
 }
 
 .react-datepicker__navigation--next,
@@ -108,26 +112,39 @@ a, button {
   @apply mt-2 !important;
 }
 
-/* Timezone Select Custom Styles */
-.tz-select__control {
-  @apply bg-white/[0.03] border-white/[0.08] hover:border-[#9945FF]/50 rounded-xl min-h-[52px] !important;
+/* Timezone & React Select Custom Styles */
+.tz-select__control, .premium-select__control {
+  @apply bg-white/[0.03] border-white/[0.08] hover:border-[#9945FF]/50 rounded-xl min-h-[52px] shadow-none !important;
 }
 
-.tz-select__menu {
-  @apply bg-[#1A1A24] border border-white/10 !important;
+.tz-select__menu, .premium-select__menu {
+  @apply bg-[#1A1A24] border border-white/10 rounded-xl overflow-hidden shadow-2xl z-[110] !important;
 }
 
-.tz-select__option--is-focused {
-  @apply bg-[#9945FF]/20 !important;
+.tz-select__option, .premium-select__option {
+  @apply text-white/60 bg-transparent hover:bg-[#9945FF]/20 hover:text-white cursor-pointer transition-colors !important;
 }
 
-.tz-select__option--is-selected {
-  @apply bg-[#9945FF] !important;
+.tz-select__option--is-focused, .premium-select__option--is-focused {
+  @apply bg-[#9945FF]/20 text-white !important;
 }
 
-.tz-select__single-value {
+.tz-select__option--is-selected, .premium-select__option--is-selected {
+  @apply bg-[#9945FF] text-white !important;
+}
+
+.tz-select__single-value, .premium-select__single-value {
   @apply text-white !important;
 }
+
+.tz-select__input-container, .premium-select__input-container {
+  @apply text-white !important;
+}
+
+.tz-select__placeholder, .premium-select__placeholder {
+  @apply text-white/30 !important;
+}
+
 
 /* Performance Optimizations */
 .will-change-transform {

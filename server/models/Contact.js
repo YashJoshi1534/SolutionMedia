@@ -29,6 +29,10 @@ const ContactSchema = new mongoose.Schema({
     preferredTime: {
         type: String,
         trim: true
+    },
+    timezone: {
+        type: String,
+        trim: true
     }
 }, {
     timestamps: true,

@@ -18,9 +18,9 @@ const Navbar = ({ openPopup }) => {
           
           {/* Nav Links - Center */}
           <div className="hidden md:flex items-center justify-center space-x-8 flex-1">
-            <a href="#how-it-works" className="text-white/60 hover:text-[#C084FC] font-medium transition-colors text-sm">Process</a>
-            <a href="#problems" className="text-white/60 hover:text-[#C084FC] font-medium transition-colors text-sm">Problems We Solve</a>
-            <button onClick={openPopup} className="text-white/60 hover:text-[#C084FC] font-medium transition-colors text-sm">Contact</button>
+            <a href="#how-it-works" className="text-[#F5F5FA] hover:text-[#C084FC] font-semibold transition-colors text-sm">Process</a>
+            <a href="#problems" className="text-[#F5F5FA] hover:text-[#C084FC] font-semibold transition-colors text-sm">Problems We Solve</a>
+            <button onClick={openPopup} className="text-[#F5F5FA] hover:text-[#C084FC] font-semibold transition-colors text-sm">Contact</button>
           </div>
 
           {/* CTA - Right */}

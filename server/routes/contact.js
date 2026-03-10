@@ -14,7 +14,7 @@ router.post("/", async (req, res) => {
     logger.info("[STEP 1] Contact form POST received");
     logger.info("[STEP 1] Raw body keys", Object.keys(req.body || {}));
 
-    const { name, email, subject, message, preferredDate, preferredTime } = req.body;
+    const { name, email, subject, message, preferredDate, preferredTime, timezone } = req.body;
 
     logger.info("[STEP 1] Parsed fields", {
       name,
@@ -23,6 +23,7 @@ router.post("/", async (req, res) => {
       messageLength: message?.length,
       preferredDate,
       preferredTime,
+      timezone,
     });
 
     if (!name || !email || !subject || !message) {
@@ -90,6 +91,7 @@ router.post("/", async (req, res) => {
         message,
         preferredDate,
         preferredTime,
+        timezone,
       });
 
       logger.info("[STEP 3] Contact saved successfully", {
@@ -121,15 +123,15 @@ router.post("/", async (req, res) => {
           from: process.env.EMAIL_USER,
           replyTo: email,
           to: receiverEmail,
-          subject: `[Contact Form] ${subject} — from ${name}`,
-          html: buildAdminEmail({ name, email, subject, message }),
+          subject: `[Lead] ${subject} — from ${name}`,
+          html: buildAdminEmail({ name, email, subject, message, preferredDate, preferredTime, timezone }),
         }),
 
         transporter.sendMail({
           from: process.env.EMAIL_USER,
           to: email,
-          subject: "Thanks for contacting us",
-          html: buildConfirmationEmail({ name, subject, message }),
+          subject: "Welcome to the Elite — Hypematter Media",
+          html: buildConfirmationEmail({ name, subject, message, preferredDate, preferredTime, timezone }),
         }),
       ]);
 
