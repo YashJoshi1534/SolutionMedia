@@ -5,14 +5,14 @@ import Hero from './components/Hero'
 import ProblemsWeSolve from './components/ProblemsWeSolve'
 import HowItWorks from './components/HowItWorks'
 import Footer from './components/Footer'
-import InteractiveBackground from './components/InteractiveBackground'
+import Background3D from './components/Background3D'
 import ContactPopup from './components/ContactPopup'
 import Pricing from './pages/Pricing'
 
 function LandingPage({ openPopup }) {
   return (
-    <div className="relative min-h-screen bg-primary-bg text-dark-green font-sans overflow-x-hidden">
-      <InteractiveBackground />
+    <div className="relative min-h-screen bg-transparent text-dark-green font-sans overflow-x-hidden">
+      <Background3D />
       <Navbar openPopup={openPopup} />
       <main>
         <Hero openPopup={openPopup} />

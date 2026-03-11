@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { Timer, CalendarRange, Banknote, Flame, TrendingUp, Layers } from 'lucide-react';
-import { motion, useScroll, useTransform, useInView } from 'framer-motion';
+import { motion, useScroll, useTransform, useInView, useMotionValue, useSpring, useMotionTemplate } from 'framer-motion';
 
 const ConnectorLine = ({ direction, delay = 0 }) => {
   const controls = {
@@ -35,26 +35,86 @@ const ConnectorLine = ({ direction, delay = 0 }) => {
 const Card = ({ icon: Icon, title, description, index }) => {
   const isLeft = index < 3;
   
+  // 3D Tilt Motion Values
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+
+  const mouseXSpring = useSpring(x);
+  const mouseYSpring = useSpring(y);
+
+  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["10deg", "-10deg"]);
+  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-10deg", "10deg"]);
+  
+  // Mouse position for glow
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  const handleMouseMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
+    const scrollX = e.clientX - rect.left;
+    const scrollY = e.clientY - rect.top;
+    
+    x.set(scrollX / width - 0.5);
+    y.set(scrollY / height - 0.5);
+    
+    mouseX.set(scrollX);
+    mouseY.set(scrollY);
+  };
+
+  const handleMouseLeave = () => {
+    x.set(0);
+    y.set(0);
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, x: isLeft ? -30 : 30, y: 20 }}
       whileInView={{ opacity: 1, x: 0, y: 0 }}
       viewport={{ once: true, margin: "-50px" }}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={{
+        rotateX,
+        rotateY,
+        transformStyle: "preserve-3d",
+      }}
       transition={{ 
         duration: 0.8, 
         delay: index * 0.1, 
         ease: [0.16, 1, 0.3, 1] 
       }}
-      className="group relative will-change-transform"
+      className="group relative will-change-transform [perspective:1000px]"
     >
-      <div className="absolute -inset-[1px] bg-gradient-to-r from-[#9945FF]/40 to-[#C084FC]/40 rounded-2xl blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-      
-      <div className="relative h-full bg-[#0A0A0F]/60 backdrop-blur-md border border-white/[0.08] group-hover:border-[#9945FF]/50 rounded-2xl p-6 flex flex-col items-center text-center transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]">
-        <div className="mb-4 p-3 bg-white/[0.03] rounded-xl border border-white/[0.05] group-hover:scale-110 group-hover:bg-[#9945FF]/10 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]">
+      <div 
+        style={{ transform: "translateZ(30px)", transformStyle: "preserve-3d" }}
+        className="relative h-full bg-[#0A0A0F]/80 backdrop-blur-md rounded-2xl p-6 flex flex-col items-center text-center transition-all duration-500 overflow-hidden border border-white/[0.05]"
+      >
+        {/* Soft Background Glow following cursor */}
+        <motion.div
+          className="pointer-events-none absolute -inset-px rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-0"
+          style={{
+            background: useMotionTemplate`radial-gradient(400px circle at ${mouseX}px ${mouseY}px, rgba(153,69,255,0.15), transparent 40%)`
+          }}
+        />
+        {/* Subtle glowing border following cursor */}
+        <motion.div
+          className="pointer-events-none absolute -inset-px rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-0"
+          style={{
+            background: useMotionTemplate`radial-gradient(200px circle at ${mouseX}px ${mouseY}px, rgba(192,132,252,0.4), transparent 40%)`,
+            maskImage: 'linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)',
+            maskComposite: 'exclude',
+            padding: '1px',
+            WebkitMaskComposite: 'xor',
+          }}
+        />
+
+        <div style={{ transform: "translateZ(50px)" }} className="relative z-10 mb-4 p-3 bg-white/[0.03] rounded-xl border border-white/[0.05] group-hover:scale-110 group-hover:bg-[#9945FF]/10 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]">
           <Icon className="w-8 h-8 text-[#C084FC] group-hover:text-[#9945FF]" strokeWidth={1.5} />
         </div>
-        <h3 className="text-white font-semibold text-lg mb-2">{title}</h3>
-        <p className="text-white/50 text-sm leading-relaxed">{description}</p>
+        <h3 style={{ transform: "translateZ(40px)" }} className="relative z-10 text-white font-semibold text-lg mb-2">{title}</h3>
+        <p style={{ transform: "translateZ(30px)" }} className="relative z-10 text-white/50 text-sm leading-relaxed">{description}</p>
       </div>
 
       <ConnectorLine direction={isLeft ? 'left' : 'right'} delay={0.4 + (index * 0.1)} />
@@ -76,7 +136,7 @@ const ProblemsWeSolve = () => {
   ];
 
   return (
-    <section id="problems" className="py-32 relative bg-[#050508] overflow-hidden">
+    <section id="problems" className="py-32 relative overflow-hidden">
       {/* Subtle Grid Background */}
       <div 
         className="absolute inset-0 opacity-[0.05] pointer-events-none" 
