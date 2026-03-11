@@ -11,8 +11,7 @@ import Pricing from './pages/Pricing'
 
 function LandingPage({ openPopup }) {
   return (
-    <div className="relative min-h-screen bg-transparent text-dark-green font-sans overflow-x-hidden">
-      <Background3D />
+    <div className="relative min-h-screen bg-primary-bg text-dark-green font-sans overflow-x-hidden">
       <Navbar openPopup={openPopup} />
       <main>
         <Hero openPopup={openPopup} />

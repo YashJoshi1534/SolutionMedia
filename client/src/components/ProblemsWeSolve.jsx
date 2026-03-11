@@ -136,7 +136,7 @@ const ProblemsWeSolve = () => {
   ];
 
   return (
-    <section id="problems" className="py-32 relative overflow-hidden">
+    <section id="problems" className="py-32 relative bg-[#050508] overflow-hidden">
       {/* Subtle Grid Background */}
       <div 
         className="absolute inset-0 opacity-[0.05] pointer-events-none" 

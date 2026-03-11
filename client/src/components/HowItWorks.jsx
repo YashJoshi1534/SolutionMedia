@@ -109,7 +109,7 @@ const HowItWorks = () => {
   ];
 
   return (
-    <section id="how-it-works" className="py-24 relative overflow-hidden">
+    <section id="how-it-works" className="py-24 bg-[#08080D] relative overflow-hidden">
       {/* Ambient glow */}
       <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-[#7B2FBE]/5 rounded-full blur-[100px] pointer-events-none" />
 
