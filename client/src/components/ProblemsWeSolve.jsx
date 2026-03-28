@@ -122,7 +122,11 @@ const Card = ({ icon: Icon, title, description, index }) => {
   );
 };
 
-const ProblemsWeSolve = () => {
+const ProblemsWeSolve = ({ 
+  title1 = "Why Most Businesses", 
+  title2 = "Struggle With Content", 
+  subtitle = "We remove the content production friction so you can focus on building your vision." 
+}) => {
   const leftCards = [
     { icon: Timer, title: "No Time to Create Content", description: "You're scaling fast, but content creation is slowing you down." },
     { icon: CalendarRange, title: "Inconsistent Posting", description: "Your brand fades away when you're too busy to stay active." },
@@ -171,15 +175,15 @@ const ProblemsWeSolve = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.8 }}
             >
-              <h2 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight mb-6">
-                <span className="text-white block">Why Most Businesses</span>
+              <h2 className="text-4xl sm:text-5xl lg:text-5xl font-extrabold tracking-tight mb-6">
+                <span className="text-white block">{title1}</span>
                 <span className="bg-gradient-to-r from-[#FBBF24] via-[#F59E0B] to-[#D97706] bg-clip-text text-transparent">
-                  Struggle With Content
+                  {title2}
                 </span>
               </h2>
               <div className="h-1 w-24 bg-gradient-to-r from-[#9945FF] to-[#C084FC] mx-auto rounded-full mb-8" />
-              <p className="text-white/60 text-lg sm:text-xl max-w-xs mx-auto leading-relaxed">
-                We remove the content production friction so you can focus on building your vision.
+              <p className="text-white/60 text-lg sm:text-xl max-w-sm mx-auto leading-relaxed">
+                {subtitle}
               </p>
             </motion.div>
           </div>

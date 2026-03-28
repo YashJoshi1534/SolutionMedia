@@ -86,8 +86,8 @@ const StepCard = ({ step, index }) => {
   );
 };
 
-const HowItWorks = () => {
-  const steps = [
+const HowItWorks = ({ 
+  steps = [
     {
       id: 1,
       icon: <PhoneCall className="w-8 h-8 text-white" />,
@@ -103,11 +103,13 @@ const HowItWorks = () => {
     {
       id: 3,
       icon: <Rocket className="w-8 h-8 text-white" />,
-      title: 'Launching — It’s On Us',
+      title: 'Launching - It’s On Us',
       description: 'Once your system is ready, we handle everything monthly. 12–15 ready-to-post videos, world-class edits, script & content ideation, posting support, and growth reports. You stay focused on your business.',
     }
-  ];
-
+  ],
+  mainTitle = "3 Simple Steps.",
+  subTitle = "No Daily Shooting."
+}) => {
   return (
     <section id="how-it-works" className="py-24 bg-[#08080D] relative overflow-hidden">
       {/* Ambient glow */}
@@ -123,8 +125,8 @@ const HowItWorks = () => {
         >
           <h2 className="text-sm font-bold tracking-widest text-[#C084FC] uppercase mb-3">How Our AI Brand System Works</h2>
           <h3 className="text-4xl lg:text-5xl font-extrabold text-white mb-6 leading-tight">
-            3 Simple Steps. <br className="hidden sm:block"/>
-            <span className="text-white/40">No Daily Shooting.</span>
+            {mainTitle} <br className="hidden sm:block"/>
+            <span className="text-white/40">{subTitle}</span>
           </h3>
         </motion.div>
 

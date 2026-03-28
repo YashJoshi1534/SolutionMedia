@@ -2,7 +2,17 @@ import React from 'react';
 import { PlayCircle, ArrowRight, Star } from 'lucide-react';
 import { motion } from 'framer-motion';
 
-const Hero = ({ openPopup }) => {
+const Hero = ({ 
+  openPopup, 
+  badgeText = "Scale Your Brand With Us", 
+  title = "Scale Your Brand With ", 
+  highlight = "AI Avatars", 
+  subtitle = "& Smart Ad Systems.",
+  description = [
+    "We help you create videos and ads using AI, so you don't need to record again and again.",
+    "Build systems so your content keeps working for you 24/7."
+  ]
+}) => {
   return (
     <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
       {/* Background decorations */}
@@ -23,19 +33,22 @@ const Hero = ({ openPopup }) => {
           >
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#9945FF]/10 border border-[#9945FF]/20 text-[#C084FC] font-medium text-sm mb-6">
               <span className="w-2 h-2 rounded-full bg-[#9945FF] animate-pulse"></span>
-              Scale Your Brand With Us
+              {badgeText}
             </div>
             
             <h1 className="text-5xl lg:text-6xl font-extrabold tracking-tight mb-6 leading-[1.1] text-white">
-              Scale Your Brand With <br className="hidden lg:block"/>
+              {title} <br className="hidden lg:block"/>
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#9945FF] via-[#C084FC] to-[#BE2F7B]">
-                AI Avatars
-              </span> & Smart Ad Systems.
+                {highlight}
+              </span> {subtitle}
             </h1>
             
             <p className="text-lg md:text-xl text-white/60 mb-8 max-w-2xl mx-auto lg:mx-0 leading-relaxed space-y-4">
-              <span className="block">We help you create videos and ads using AI, so you don't need to record again and again.</span>
-              <span className="block font-medium text-white/80">Build systems so your content keeps working for you 24/7.</span>
+              {description.map((line, index) => (
+                <span key={index} className={`block ${index === 1 ? 'font-medium text-white/80' : ''}`}>
+                  {line}
+                </span>
+              ))}
             </p>
 
             <div className="flex flex-col items-center lg:items-start gap-3 mb-10">

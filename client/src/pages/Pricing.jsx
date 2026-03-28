@@ -1,9 +1,9 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import {
-  Check, Star, Sparkles, ArrowRight, Camera, Brain, FileText, Globe,
-  Palette, Video, Wand2, BarChart3, Calendar, Lightbulb, PenTool,
-  Megaphone, TrendingUp, Search, Rocket, Crown, Zap, ChevronLeft, Menu, X
+  Star, ArrowRight, Camera, Brain, FileText, Globe,
+  Palette, Video, Wand2, Calendar, Lightbulb,
+  Megaphone, TrendingUp, Crown, Menu, X
 } from 'lucide-react';
 
 const packages = [
@@ -47,32 +47,6 @@ const packages = [
       { icon: Lightbulb, text: 'Lead Gen Caption Writing' },
     ],
   },
-  {
-    id: 'package-3',
-    badge: 'CREATIVE',
-    name: 'Creative Campaign',
-    subtitle: 'Package 3',
-    description: 'Cinematic AI-powered campaigns for your products — from concept to final production, crafted for viral impact.',
-    popular: false,
-    gradient: 'from-[#BE2F7B] to-[#8E1D5A]',
-    glowColor: 'rgba(190, 47, 123, 0.3)',
-    borderColor: 'border-[#BE2F7B]/30',
-    features: [
-      { icon: Lightbulb, text: 'Concept Building' },
-      { icon: FileText, text: 'Storytelling & Scripting' },
-      { icon: PenTool, text: 'Storyboarding' },
-      { icon: Wand2, text: 'AI Image Generation' },
-      { icon: Video, text: 'AI Video Generation' },
-      { icon: Sparkles, text: 'Post Production & Polish' },
-    ],
-  },
-];
-
-const complimentaryServices = [
-  { icon: Globe, text: 'Website Development' },
-  { icon: Search, text: 'SEO Optimization' },
-  { icon: BarChart3, text: 'Performance Marketing' },
-  { icon: Rocket, text: 'Ad Boosting & Campaigns' },
 ];
 
 const fadeUp = {
@@ -109,12 +83,27 @@ const Pricing = () => {
               </span>
             </a>
 
-            {/* Desktop Nav */}
-            <nav className="hidden md:flex items-center gap-8">
-              <a href="/" className="text-white/50 hover:text-[#C084FC] font-medium transition-colors text-sm">Home</a>
-              <a href="/#problems" className="text-white/50 hover:text-[#C084FC] font-medium transition-colors text-sm">Problems We Solve</a>
-              <a href="/#how-it-works" className="text-white/50 hover:text-[#C084FC] font-medium transition-colors text-sm">Process</a>
-              <span className="text-[#C084FC] font-semibold text-sm border-b border-[#9945FF]/50 pb-0.5">Packages</span>
+            <nav className="hidden md:flex items-center gap-10">
+              <a href="/" className="text-white/60 hover:text-[#9945FF] font-bold transition-all text-xs uppercase tracking-widest group">
+                Home
+                <div className="h-0.5 w-0 group-hover:w-full bg-[#9945FF] transition-all duration-300" />
+              </a>
+              <a href="/#work" className="text-white/60 hover:text-[#9945FF] font-bold transition-all text-xs uppercase tracking-widest group">
+                Work
+                <div className="h-0.5 w-0 group-hover:w-full bg-[#9945FF] transition-all duration-300" />
+              </a>
+              <a href="/#services" className="text-white/60 hover:text-[#9945FF] font-bold transition-all text-xs uppercase tracking-widest group">
+                Solution
+                <div className="h-0.5 w-0 group-hover:w-full bg-[#9945FF] transition-all duration-300" />
+              </a>
+              <a href="/avatar" className="text-white/60 hover:text-[#9945FF] font-bold transition-all text-xs uppercase tracking-widest group">
+                Avatar
+                <div className="h-0.5 w-0 group-hover:w-full bg-[#9945FF] transition-all duration-300" />
+              </a>
+              <a href="/#testimonials" className="text-white/60 hover:text-[#9945FF] font-bold transition-all text-xs uppercase tracking-widest group">
+                Testimonials
+                <div className="h-0.5 w-0 group-hover:w-full bg-[#9945FF] transition-all duration-300" />
+              </a>
             </nav>
 
             {/* CTA + Mobile Toggle */}
@@ -184,7 +173,7 @@ const Pricing = () => {
 
       {/* Pricing Cards */}
       <section className="relative z-10 px-4 pb-20">
-        <div className="max-w-7xl mx-auto grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+        <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-8 justify-center">
           {packages.map((pkg, idx) => (
             <motion.div
               key={pkg.id}
@@ -258,53 +247,6 @@ const Pricing = () => {
             </motion.div>
           ))}
         </div>
-      </section>
-
-      {/* Complimentary Section */}
-      <section className="relative z-10 px-4 pb-24">
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: '-50px' }}
-          variants={fadeUp}
-          className="max-w-4xl mx-auto"
-        >
-          <div className="relative rounded-3xl border border-[#9945FF]/20 bg-[#12121A]/60 backdrop-blur-xl p-8 sm:p-10 overflow-hidden">
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-48 bg-[#9945FF]/10 rounded-full blur-[100px] pointer-events-none" />
-
-            <div className="relative text-center mb-8">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 font-medium text-sm mb-4">
-                <Zap className="w-4 h-4" />
-                Complimentary Services
-              </div>
-              <h2 className="text-2xl sm:text-3xl font-extrabold text-white mb-2">
-                Included With Every Package
-              </h2>
-              <p className="text-white/40 text-sm max-w-lg mx-auto">
-                These essential growth services come free with any package you choose.
-              </p>
-            </div>
-
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              {complimentaryServices.map((service, i) => (
-                <motion.div
-                  key={i}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true }}
-                  variants={fadeUp}
-                  custom={i}
-                  className="flex flex-col items-center gap-3 p-5 rounded-2xl bg-white/[0.03] border border-white/[0.06] hover:border-emerald-500/20 hover:bg-emerald-500/[0.03] transition-all duration-300 group"
-                >
-                  <div className="w-11 h-11 rounded-xl bg-emerald-500/10 flex items-center justify-center group-hover:bg-emerald-500/20 transition-colors">
-                    <service.icon className="w-5 h-5 text-emerald-400" />
-                  </div>
-                  <span className="text-white/70 text-sm font-medium text-center">{service.text}</span>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </motion.div>
       </section>
 
       {/* Footer */}

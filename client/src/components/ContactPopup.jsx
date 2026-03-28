@@ -11,12 +11,8 @@ import {
 } from 'lucide-react';
 
 const subjectOptions = [
-  { value: 'General Inquiry', label: 'General Inquiry' },
-  { value: 'Project Collaboration', label: 'Project Collaboration' },
-  { value: 'AI Avatar Services', label: 'AI Avatar Services' },
-  { value: 'Ad Systems & Automation', label: 'Ad Systems & Automation' },
-  { value: 'Schedule a Call', label: 'Schedule a Call' },
-  { value: 'Other', label: 'Other' },
+  { value: 'General Service', label: 'General Service' },
+  { value: 'Our Service', label: 'Our Service' },
 ];
 
 const ContactPopup = ({ isOpen, onClose }) => {
