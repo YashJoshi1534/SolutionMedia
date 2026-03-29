@@ -44,8 +44,8 @@ function LandingPage({ openPopup }) {
         <Hero 
           openPopup={openPopup} 
           badgeText="Grow Your Influence"
-          title="Grow Your Influence "
-          highlight="Organically"
+          title="Grow Your "
+          highlight="Influence"
           subtitle="with AI-Driven Content Solutions."
           description={[
             "Build your personal brand and business influence through organic AI-powered content.",
