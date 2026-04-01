@@ -1,13 +1,15 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { User, Video, Globe } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const services = [
   {
     icon: User,
     title: 'AI Avatars',
     description: 'High-end digital twins for content automation and personalized brand representation.',
-    gradient: 'from-[#9945FF] to-[#7B2FBE]'
+    gradient: 'from-[#9945FF] to-[#7B2FBE]',
+    link: '/avatar'
   },
   {
     icon: Video,
@@ -24,6 +26,7 @@ const services = [
 ];
 
 const Services = () => {
+  const navigate = useNavigate();
   return (
     <section id="services" className="py-24 bg-[#0A0A0F] relative overflow-hidden text-white">
       {/* Background decorations */}
@@ -57,12 +60,17 @@ const Services = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
               className="group relative"
+              onClick={() => { if (service.link) { navigate(service.link); window.scrollTo(0, 0); } }}
+              style={{ cursor: service.link ? 'pointer' : 'default' }}
             >
               <div className="relative h-full bg-[#12121A]/80 backdrop-blur-xl rounded-3xl p-8 border border-white/[0.05] hover:border-[#9945FF]/30 transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(153,69,255,0.1)]">
                 <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${service.gradient} flex items-center justify-center mb-6 shadow-lg shadow-[#9945FF]/20 group-hover:scale-110 transition-transform duration-500`}>
                   <service.icon className="w-7 h-7 text-white" />
                 </div>
-                <h4 className="text-2xl font-bold mb-4 group-hover:text-[#C084FC] transition-colors">{service.title}</h4>
+                <h4 className="text-2xl font-bold mb-4 group-hover:text-[#C084FC] transition-colors">
+                  {service.title}
+                  {service.link && <span className="ml-2 text-sm text-[#9945FF] font-normal opacity-0 group-hover:opacity-100 transition-opacity">→</span>}
+                </h4>
                 <p className="text-white/50 leading-relaxed">{service.description}</p>
               </div>
             </motion.div>

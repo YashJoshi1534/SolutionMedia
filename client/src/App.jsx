@@ -11,7 +11,7 @@ import Pricing from './pages/Pricing'
 import Avatar from './pages/Avatar'
 import Services from './components/Services'
 import Testimonials from './components/Testimonials'
-import Work from './components/Work'
+
 
 import { PhoneCall, Cog, Rocket } from 'lucide-react'
 
@@ -52,7 +52,7 @@ function LandingPage({ openPopup }) {
             "Stay consistent effortlessly with our smart content automation systems."
           ]}
         />
-        <Work />
+
         <ProblemsWeSolve 
           title1="Why" 
           title2="Us?" 

@@ -71,8 +71,10 @@ const StepCard = ({ step, index }) => {
            }}
         />
 
-        <div style={{ transform: "translateZ(50px)" }} className="absolute -top-6 left-1/2 -translate-x-1/2 w-16 h-16 rounded-full bg-gradient-to-br from-[#9945FF] to-[#7B2FBE] flex justify-center items-center shadow-lg shadow-[#9945FF]/20 group-hover:scale-110 transition-transform z-10">
-          {step.icon}
+        <div style={{ transform: "translateZ(50px)" }} className="absolute -top-6 left-0 right-0 flex justify-center z-10">
+          <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#9945FF] to-[#7B2FBE] flex justify-center items-center shadow-lg shadow-[#9945FF]/20 group-hover:scale-110 transition-transform">
+            {step.icon}
+          </div>
         </div>
         <div className="mt-12 text-center" style={{ transformStyle: "preserve-3d" }}>
           <span style={{ transform: "translateZ(40px)" }} className="relative z-10 text-xs font-bold text-[#C084FC] uppercase tracking-wider mb-2 block">Step {step.id}</span>

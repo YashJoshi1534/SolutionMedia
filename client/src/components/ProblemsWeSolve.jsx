@@ -181,7 +181,9 @@ const ProblemsWeSolve = ({
                   {title2}
                 </span>
               </h2>
-              <div className="h-1 w-24 bg-gradient-to-r from-[#9945FF] to-[#C084FC] mx-auto rounded-full mb-8" />
+              <div className="flex justify-center mb-8">
+                <div className="h-1 w-24 bg-gradient-to-r from-[#9945FF] to-[#C084FC] rounded-full" />
+              </div>
               <p className="text-white/60 text-lg sm:text-xl max-w-sm mx-auto leading-relaxed">
                 {subtitle}
               </p>
