@@ -175,18 +175,15 @@ const ProblemsWeSolve = ({
               viewport={{ once: true }}
               transition={{ duration: 0.8 }}
             >
-              <h2 className="text-4xl sm:text-5xl lg:text-5xl font-extrabold tracking-tight mb-6">
-                <span className="text-white block">{title1}</span>
-                <span className="bg-gradient-to-r from-[#FBBF24] via-[#F59E0B] to-[#D97706] bg-clip-text text-transparent">
-                  {title2}
-                </span>
-              </h2>
-              <div className="flex justify-center mb-8">
-                <div className="h-1 w-24 bg-gradient-to-r from-[#9945FF] to-[#C084FC] rounded-full" />
+              <div className="inline-flex flex-col items-center mb-8">
+                <h2 className="text-4xl sm:text-5xl lg:text-5xl font-extrabold tracking-tight mb-3 text-center">
+                  <span className="text-white">{title1} </span>
+                  <span className="bg-gradient-to-r from-[#FBBF24] via-[#F59E0B] to-[#D97706] bg-clip-text text-transparent">
+                    {title2}
+                  </span>
+                </h2>
+                {/* <div className="h-1 w-full bg-gradient-to-r from-[#9945FF] to-[#C084FC] rounded-full" /> */}
               </div>
-              <p className="text-white/60 text-lg sm:text-xl max-w-sm mx-auto leading-relaxed">
-                {subtitle}
-              </p>
             </motion.div>
           </div>
 

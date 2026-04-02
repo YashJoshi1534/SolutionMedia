@@ -56,7 +56,6 @@ function LandingPage({ openPopup }) {
         <ProblemsWeSolve 
           title1="Why" 
           title2="Us?" 
-          subtitle="(1m+ views generated, 30+ clients served, 100+ AI videos created, Cinematic and story driven ads)"
         />
         <Services />
         <Testimonials />

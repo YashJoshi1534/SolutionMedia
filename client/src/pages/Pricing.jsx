@@ -23,6 +23,7 @@ const packages = [
       { icon: Brain, text: 'AI Avatar + Audio Cloning' },
       { icon: FileText, text: 'Scripting & Copywriting' },
       { icon: Globe, text: 'Landing Page Design' },
+      { icon: Video, text: '12–15 High Quality Edits' },
     ],
   },
   {
@@ -173,7 +174,7 @@ const Pricing = () => {
 
       {/* Pricing Cards */}
       <section className="relative z-10 px-4 pb-20">
-        <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-8 justify-center">
+        <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-8 justify-center items-stretch">
           {packages.map((pkg, idx) => (
             <motion.div
               key={pkg.id}
@@ -182,7 +183,7 @@ const Pricing = () => {
               viewport={{ once: true, margin: '-50px' }}
               variants={fadeUp}
               custom={idx}
-              className={`relative group ${pkg.popular ? 'lg:-mt-4 lg:mb-4' : ''}`}
+              className="relative group h-full"
             >
               {/* Popular Glow */}
               {pkg.popular && (
@@ -190,7 +191,7 @@ const Pricing = () => {
               )}
 
               <div
-                className={`relative h-full rounded-3xl border ${pkg.borderColor} bg-[#12121A]/80 backdrop-blur-xl p-8 overflow-hidden transition-all duration-500 hover:border-white/20 hover:translate-y-[-4px]`}
+                className={`relative h-full rounded-3xl border ${pkg.borderColor} bg-[#12121A]/80 backdrop-blur-xl p-8 overflow-hidden transition-all duration-500 hover:border-white/20 hover:translate-y-[-4px] flex flex-col`}
                 style={{
                   boxShadow: `0 0 60px -20px ${pkg.glowColor}`,
                 }}
@@ -234,6 +235,7 @@ const Pricing = () => {
                 {/* CTA */}
                 <a
                   href="/"
+                  style={{ marginTop: 'auto' }}
                   className={`w-full inline-flex items-center justify-center gap-2 py-3.5 rounded-xl font-semibold text-sm transition-all duration-300 group/btn ${
                     pkg.popular
                       ? `bg-gradient-to-r ${pkg.gradient} text-white hover:shadow-lg hover:shadow-[#9945FF]/30 hover:scale-[1.02]`
