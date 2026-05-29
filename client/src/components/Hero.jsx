@@ -1,6 +1,6 @@
-import React from 'react';
-import { PlayCircle, ArrowRight, Star } from 'lucide-react';
-import { motion } from 'framer-motion';
+import React, { useState } from 'react';
+import { PlayCircle, ArrowRight, Star, X } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const Hero = ({ 
   openPopup, 
@@ -11,8 +11,11 @@ const Hero = ({
   description = [
     "We help you create videos and ads using AI, so you don't need to record again and again.",
     "Build systems so your content keeps working for you 24/7."
-  ]
+  ],
+  ctaText = "Schedule a Call"
 }) => {
+  const [showLightbox, setShowLightbox] = useState(false);
+
   return (
     <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
       {/* Background decorations */}
@@ -53,7 +56,7 @@ const Hero = ({
 
             <div className="flex flex-col items-center lg:items-start gap-3 mb-10">
               <button onClick={openPopup} className="btn-primary inline-flex items-center gap-2 justify-center group w-full sm:w-auto">
-                Schedule a Call
+                {ctaText}
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </button>
               <p className="text-sm font-medium text-white/50 flex items-center gap-2">
@@ -88,7 +91,7 @@ const Hero = ({
             className="relative mx-auto w-full max-w-lg lg:max-w-none"
           >
             <div className="absolute inset-0 bg-gradient-to-tr from-[#9945FF]/20 to-transparent rounded-3xl blur-2xl transform rotate-3"></div>
-            <div className="relative aspect-[4/5] sm:aspect-video lg:aspect-[4/5] bg-[#12121A] rounded-3xl shadow-2xl overflow-hidden border border-[#9945FF]/20 flex flex-col justify-center items-center group cursor-pointer hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(153,69,255,0.15)] transition-all duration-500">
+            <div onClick={() => setShowLightbox(true)} className="relative aspect-[4/5] sm:aspect-video lg:aspect-[4/5] bg-[#12121A] rounded-3xl shadow-2xl overflow-hidden border border-[#9945FF]/20 flex flex-col justify-center items-center group cursor-pointer hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(153,69,255,0.15)] transition-all duration-500">
                <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80')] bg-cover bg-center opacity-30 mix-blend-overlay"></div>
                <div className="absolute inset-0 bg-[#0A0A0F]/40 group-hover:bg-[#0A0A0F]/20 transition-colors duration-500"></div>
                
@@ -116,6 +119,46 @@ const Hero = ({
           </motion.div>
         </div>
       </div>
+
+      {/* Lightbox Modal */}
+      <AnimatePresence>
+        {showLightbox && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-md p-4"
+          >
+            {/* Close backdrop click handler */}
+            <div className="absolute inset-0 cursor-pointer" onClick={() => setShowLightbox(false)} />
+            
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              className="relative w-full max-w-4xl aspect-video bg-[#12121A] rounded-2xl overflow-hidden border border-[#9945FF]/20 shadow-2xl z-10"
+            >
+              {/* Close Button */}
+              <button 
+                onClick={() => setShowLightbox(false)}
+                className="absolute top-4 right-4 text-white/70 hover:text-white bg-black/40 backdrop-blur-md hover:bg-black/60 rounded-full p-2 transition-all border border-white/5 z-20"
+              >
+                <X className="w-6 h-6" />
+              </button>
+              
+              {/* Drive Video Iframe */}
+              <iframe
+                src="https://drive.google.com/file/d/1kWHuORS_YR9RMEg8inj5YoK4kLVg31IG/preview"
+                className="w-full h-full border-none"
+                allow="autoplay; encrypted-media"
+                allowFullScreen
+                title="Watch My Process"
+              ></iframe>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
     </section>
   );
 };

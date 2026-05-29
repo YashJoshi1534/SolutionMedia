@@ -3,6 +3,9 @@ import { ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const Footer = ({ openPopup }) => {
+  const [logoError, setLogoError] = React.useState(false);
+  const logoUrl = 'https://res.cloudinary.com/dxxjiuq25/image/upload/v1780063200/Logo_pwwrgn.png';
+
   return (
     <footer className="bg-[#0A0A0F] pt-20 pb-10 border-t border-white/5">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -32,10 +35,19 @@ const Footer = ({ openPopup }) => {
         </motion.div>
 
         <div className="flex flex-col md:flex-row justify-between items-center gap-6 text-white/30 text-sm">
-          <div className="flex items-center gap-2">
-            <div className="w-6 h-6 bg-[#9945FF] rounded flex justify-center items-center text-white font-bold text-xs leading-none">H</div>
-            <span className="font-bold text-white/70">Hypematter Media</span>
-          </div>
+          {!logoError ? (
+            <img 
+              src={logoUrl} 
+              alt="Hypematter Media" 
+              className="h-12 w-auto object-contain hover:opacity-90 transition-opacity" 
+              onError={() => setLogoError(true)}
+            />
+          ) : (
+            <div className="flex items-center gap-2">
+              <div className="w-6 h-6 bg-[#9945FF] rounded flex justify-center items-center text-white font-bold text-xs leading-none">H</div>
+              <span className="font-bold text-white/70">Hypematter Media</span>
+            </div>
+          )}
           
           <div className="flex gap-6">
             <a href="#" className="hover:text-[#C084FC] transition-colors">Privacy Policy</a>

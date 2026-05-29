@@ -5,6 +5,8 @@ import { useLocation } from 'react-router-dom';
 
 const Navbar = ({ openPopup }) => {
   const [menuOpen, setMenuOpen] = React.useState(false);
+  const [logoError, setLogoError] = React.useState(false);
+  const logoUrl = 'https://res.cloudinary.com/dxxjiuq25/image/upload/v1780063200/Logo_pwwrgn.png';
   const location = useLocation();
   const isAvatarPage = location.pathname === '/avatar';
 
@@ -30,12 +32,23 @@ const Navbar = ({ openPopup }) => {
           
           {/* Logo - Left */}
           <a href="/" className="flex-shrink-0 flex items-center gap-2 cursor-pointer w-48 group">
-            <div className="w-8 h-8 bg-gradient-to-br from-[#9945FF] to-[#7B2FBE] rounded-lg flex justify-center items-center text-white font-bold text-xl leading-none shadow-lg shadow-[#9945FF]/20 group-hover:scale-110 transition-transform">
-              H
-            </div>
-            <span className="font-bold text-xl tracking-tight text-white group-hover:text-[#C084FC] transition-colors">
-              Hypematter Media
-            </span>
+            {!logoError ? (
+              <img 
+                src={logoUrl} 
+                alt="Hypematter Media" 
+                className="h-14 w-auto object-contain transition-transform group-hover:scale-105" 
+                onError={() => setLogoError(true)}
+              />
+            ) : (
+              <>
+                <div className="w-8 h-8 bg-gradient-to-br from-[#9945FF] to-[#7B2FBE] rounded-lg flex justify-center items-center text-white font-bold text-xl leading-none shadow-lg shadow-[#9945FF]/20 group-hover:scale-110 transition-transform">
+                  H
+                </div>
+                <span className="font-bold text-xl tracking-tight text-white group-hover:text-[#C084FC] transition-colors">
+                  Hypematter Media
+                </span>
+              </>
+            )}
           </a>
           
           {/* Nav Links - Center */}

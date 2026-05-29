@@ -11,32 +11,16 @@ import Pricing from './pages/Pricing'
 import Avatar from './pages/Avatar'
 import Services from './components/Services'
 import Testimonials from './components/Testimonials'
+import VideoShowcase from './components/VideoShowcase'
+import ClientMarquee from './components/ClientMarquee'
+import KeyBenefits from './components/KeyBenefits'
+import Expertise from './components/Expertise'
+import FAQ from './components/FAQ'
 
 
-import { PhoneCall, Cog, Rocket } from 'lucide-react'
+
 
 function LandingPage({ openPopup }) {
-  const homeSteps = [
-    {
-      id: 1,
-      icon: <PhoneCall className="w-8 h-8 text-white" />,
-      title: 'Schedule your call',
-      description: 'Book a discovery session to discuss your brand and organic growth potential.',
-    },
-    {
-      id: 2,
-      icon: <Cog className="w-8 h-8 text-white" />,
-      title: 'Tell us your concerns',
-      description: 'Share your challenges and goals so we can tailor the perfect AI strategy for you.',
-    },
-    {
-      id: 3,
-      icon: <Rocket className="w-8 h-8 text-white" />,
-      title: 'Finalise your AI-Driven solutions',
-      description: 'We finalize and launch your custom AI content system for organic influence.',
-    }
-  ];
-
   return (
     <div className="relative min-h-screen bg-primary-bg text-dark-green font-sans overflow-x-hidden">
       <Navbar openPopup={openPopup} />
@@ -44,26 +28,29 @@ function LandingPage({ openPopup }) {
         <Hero 
           openPopup={openPopup} 
           badgeText="Grow Your Influence"
-          title="Grow Your "
-          highlight="Influence"
-          subtitle="with AI-Driven Content Solutions."
+          title="We build content systems for "
+          highlight="brands and founders,"
+          subtitle="faster, smarter, and more visual than anyone else."
           description={[
-            "Build your personal brand and business influence through organic AI-powered content.",
-            "Stay consistent effortlessly with our smart content automation systems."
+            "We automate your content with an AI system, so your brand never runs out of content again."
           ]}
+          ctaText="Book a Free discovery call"
         />
+
+        <ClientMarquee />
 
         <ProblemsWeSolve 
           title1="Why" 
           title2="Us?" 
         />
+
+        <KeyBenefits />
+        <HowItWorks />
+        <Expertise />
         <Services />
         <Testimonials />
-        <HowItWorks 
-          steps={homeSteps}
-          mainTitle="3 Simple Steps."
-          subTitle="To Your Success."
-        />
+        <VideoShowcase />
+        <FAQ />
       </main>
       <Footer openPopup={openPopup} />
     </div>

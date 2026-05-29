@@ -26,9 +26,7 @@ const testimonials = [
   }
 ];
 
-const partners = [
-  "TechFlow", "Marketly", "Visionary", "Peak Performance", "Global Scale"
-];
+
 
 const Testimonials = () => {
   return (
@@ -38,17 +36,7 @@ const Testimonials = () => {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
-        {/* Partners Section */}
-        <div className="mb-24 text-center">
-          <p className="text-white/40 text-sm font-bold uppercase tracking-widest mb-10">Trusted by Forward-Thinking Brands</p>
-          <div className="flex flex-wrap justify-center items-center gap-12 lg:gap-20 opacity-30 grayscale hover:grayscale-0 transition-all duration-500">
-            {partners.map((partner, index) => (
-              <span key={index} className="text-2xl lg:text-3xl font-black text-white tracking-tighter hover:text-[#9945FF] transition-colors cursor-default">
-                {partner}
-              </span>
-            ))}
-          </div>
-        </div>
+
 
         <div className="text-center mb-16">
           <motion.div

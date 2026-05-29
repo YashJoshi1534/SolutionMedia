@@ -1,0 +1,225 @@
+import React, { useRef } from 'react';
+import { Zap, Palette, Clock, DollarSign, Aperture, TrendingUp } from 'lucide-react';
+import { motion, useMotionValue, useSpring, useTransform, useMotionTemplate } from 'framer-motion';
+
+const ConnectorLine = ({ direction, delay = 0 }) => {
+  const controls = {
+    left: "M 100 0 Q 50 0 0 50",
+    right: "M 0 0 Q 50 0 100 50"
+  };
+
+  return (
+    <div className={`absolute hidden lg:block pointer-events-none opacity-20 ${direction === 'left' ? '-right-16 top-1/2' : '-left-16 top-1/2'}`}>
+      <svg width="80" height="40" viewBox="0 0 100 50" fill="none">
+        <motion.path
+          initial={{ pathLength: 0 }}
+          whileInView={{ pathLength: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1, delay }}
+          d={controls[direction]}
+          stroke="url(#purpleGradientKey)"
+          strokeWidth="2"
+          strokeDasharray="4 4"
+        />
+        <defs>
+          <linearGradient id="purpleGradientKey" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="#9945FF" />
+            <stop offset="100%" stopColor="#C084FC" />
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
+  );
+};
+
+const Card = ({ icon: Icon, title, description, index }) => {
+  const isLeft = index < 3;
+  
+  // 3D Tilt Motion Values
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+
+  const mouseXSpring = useSpring(x);
+  const mouseYSpring = useSpring(y);
+
+  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["10deg", "-10deg"]);
+  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-10deg", "10deg"]);
+  
+  // Mouse position for glow
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  const handleMouseMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
+    const scrollX = e.clientX - rect.left;
+    const scrollY = e.clientY - rect.top;
+    
+    x.set(scrollX / width - 0.5);
+    y.set(scrollY / height - 0.5);
+    
+    mouseX.set(scrollX);
+    mouseY.set(scrollY);
+  };
+
+  const handleMouseLeave = () => {
+    x.set(0);
+    y.set(0);
+  };
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, x: isLeft ? -30 : 30, y: 20 }}
+      whileInView={{ opacity: 1, x: 0, y: 0 }}
+      viewport={{ once: true, margin: "-50px" }}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={{
+        rotateX,
+        rotateY,
+        transformStyle: "preserve-3d",
+      }}
+      transition={{ 
+        duration: 0.8, 
+        delay: index * 0.1, 
+        ease: [0.16, 1, 0.3, 1] 
+      }}
+      className="group relative will-change-transform [perspective:1000px]"
+    >
+      <div 
+        style={{ transform: "translateZ(30px)", transformStyle: "preserve-3d" }}
+        className="relative h-full bg-[#0A0A0F]/80 backdrop-blur-md rounded-2xl p-6 flex flex-col items-center text-center transition-all duration-500 overflow-hidden border border-white/[0.05]"
+      >
+        {/* Soft Background Glow following cursor */}
+        <motion.div
+          className="pointer-events-none absolute -inset-px rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-0"
+          style={{
+            background: useMotionTemplate`radial-gradient(400px circle at ${mouseX}px ${mouseY}px, rgba(153,69,255,0.15), transparent 40%)`
+          }}
+        />
+        {/* Subtle glowing border following cursor */}
+        <motion.div
+          className="pointer-events-none absolute -inset-px rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-0"
+          style={{
+            background: useMotionTemplate`radial-gradient(200px circle at ${mouseX}px ${mouseY}px, rgba(192,132,252,0.4), transparent 40%)`,
+            maskImage: 'linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)',
+            maskComposite: 'exclude',
+            padding: '1px',
+            WebkitMaskComposite: 'xor',
+          }}
+        />
+
+        <div style={{ transform: "translateZ(50px)" }} className="relative z-10 mb-4 p-3 bg-white/[0.03] rounded-xl border border-white/[0.05] group-hover:scale-110 group-hover:bg-[#9945FF]/10 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]">
+          <Icon className="w-8 h-8 text-[#C084FC] group-hover:text-[#9945FF]" strokeWidth={1.5} />
+        </div>
+        <h3 style={{ transform: "translateZ(40px)" }} className="relative z-10 text-white font-semibold text-lg mb-2">{title}</h3>
+        <p style={{ transform: "translateZ(30px)" }} className="relative z-10 text-white/50 text-sm leading-relaxed">{description}</p>
+      </div>
+
+      <ConnectorLine direction={isLeft ? 'left' : 'right'} delay={0.4 + (index * 0.1)} />
+    </motion.div>
+  );
+};
+
+const KeyBenefits = () => {
+  const leftCards = [
+    { 
+      icon: Zap, 
+      title: "Faster Production", 
+      description: "Create high-quality creative assets in a fraction of the time compared to traditional production." 
+    },
+    { 
+      icon: Palette, 
+      title: "Creative Flexibility", 
+      description: "Explore new visual concepts and styles without the limits of physical shoots or fixed production setups." 
+    },
+    { 
+      icon: Clock, 
+      title: "Competitive Advantage", 
+      description: "Launch campaigns faster and adapt creative content to changing market trends." 
+    }
+  ];
+
+  const rightCards = [
+    { 
+      icon: DollarSign, 
+      title: "Lower Production Costs", 
+      description: "Reduce expensive photoshoots, studio setups and post-production with AI-powered visuals." 
+    },
+    { 
+      icon: Aperture, 
+      title: "Consistent Branding", 
+      description: "Keep your visual identity consistent across campaigns, products and marketing channels." 
+    },
+    { 
+      icon: TrendingUp, 
+      title: "Scalable Content", 
+      description: "Expand your content output efficiently without rebuilding your creative process each time." 
+    }
+  ];
+
+  return (
+    <section id="benefits" className="py-32 relative bg-[#050508] overflow-hidden border-t border-white/[0.03]">
+      {/* Subtle Grid Background */}
+      <div 
+        className="absolute inset-0 opacity-[0.03] pointer-events-none" 
+        style={{
+          backgroundImage: `
+            linear-gradient(to right, #444 1px, transparent 1px),
+            linear-gradient(to bottom, #444 1px, transparent 1px)
+          `,
+          backgroundSize: '80px 80px',
+          maskImage: 'radial-gradient(circle at center, black, transparent 80%)'
+        }}
+      />
+
+      {/* Background Glows */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#BE2F7B]/3 rounded-full blur-[120px] pointer-events-none" />
+      
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 lg:gap-16 items-center">
+          
+          {/* Left Side Cards */}
+          <div className="order-2 lg:order-1 flex flex-col gap-8">
+            {leftCards.map((card, idx) => (
+              <Card key={idx} {...card} index={idx} />
+            ))}
+          </div>
+
+          {/* Center Content */}
+          <div className="order-1 lg:order-2 text-center flex flex-col items-center justify-center py-12">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+            >
+              <div className="inline-flex flex-col items-center mb-4">
+                <h2 className="text-4xl sm:text-5xl lg:text-5xl font-extrabold tracking-tight mb-4 text-center leading-tight">
+                  <span className="text-white">Key </span>
+                  <span className="bg-gradient-to-r from-[#9945FF] via-[#C084FC] to-[#BE2F7B] bg-clip-text text-transparent">
+                    Benefits
+                  </span>
+                </h2>
+                <p className="text-white/60 text-sm sm:text-base leading-relaxed max-w-sm mt-2">
+                  Discover how creative AI enables brands to create high-impact content, simplify production, and unlock more scalable creative output.
+                </p>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Right Side Cards */}
+          <div className="order-3 flex flex-col gap-8">
+            {rightCards.map((card, idx) => (
+              <Card key={idx + 3} {...card} index={idx + 3} />
+            ))}
+          </div>
+
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default KeyBenefits;
