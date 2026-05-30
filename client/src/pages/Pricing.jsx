@@ -5,6 +5,7 @@ import {
   Palette, Video, Wand2, Calendar, Lightbulb,
   Megaphone, TrendingUp, Crown, Menu, X
 } from 'lucide-react';
+import logoUrl from '../assets/GenArc Brand asset/White text logo.svg';
 
 const packages = [
   {
@@ -60,6 +61,7 @@ const fadeUp = {
 
 const Pricing = () => {
   const [menuOpen, setMenuOpen] = React.useState(false);
+  const [logoError, setLogoError] = React.useState(false);
 
   return (
     <div className="min-h-screen bg-[#0A0A0F] text-white overflow-x-hidden">
@@ -76,12 +78,23 @@ const Pricing = () => {
           <div className="flex justify-between items-center h-20">
             {/* Logo */}
             <a href="/" className="flex items-center gap-2.5 group">
-              <div className="w-9 h-9 bg-gradient-to-br from-[#9945FF] to-[#7B2FBE] rounded-xl flex items-center justify-center text-white font-bold text-lg leading-none shadow-lg shadow-[#9945FF]/20">
-                H
-              </div>
-              <span className="font-bold text-xl tracking-tight text-white group-hover:text-[#C084FC] transition-colors">
-                Hypematter Media
-              </span>
+              {!logoError ? (
+                <img 
+                  src={logoUrl} 
+                  alt="Hypematter Media" 
+                  className="h-18 w-auto object-contain transition-transform group-hover:scale-105" 
+                  onError={() => setLogoError(true)}
+                />
+              ) : (
+                <>
+                  <div className="w-9 h-9 bg-gradient-to-br from-[#9945FF] to-[#7B2FBE] rounded-xl flex items-center justify-center text-white font-bold text-lg leading-none shadow-lg shadow-[#9945FF]/20">
+                    H
+                  </div>
+                  <span className="font-bold text-xl tracking-tight text-white group-hover:text-[#C084FC] transition-colors">
+                    Hypematter Media
+                  </span>
+                </>
+              )}
             </a>
 
             <nav className="hidden md:flex items-center gap-10">
@@ -254,12 +267,23 @@ const Pricing = () => {
       {/* Footer */}
       <footer className="relative z-10 border-t border-white/5 py-8 px-4">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
-          <div className="flex items-center gap-2">
-            <div className="w-6 h-6 bg-[#9945FF] rounded flex items-center justify-center text-white font-bold text-xs leading-none">
-              H
-            </div>
-            <span className="font-bold text-white/70">Hypematter Media</span>
-          </div>
+          <a href="/" className="flex items-center gap-2">
+            {!logoError ? (
+              <img 
+                src={logoUrl} 
+                alt="Hypematter Media" 
+                className="h-14 w-auto object-contain hover:opacity-90 transition-opacity" 
+                onError={() => setLogoError(true)}
+              />
+            ) : (
+              <>
+                <div className="w-6 h-6 bg-[#9945FF] rounded flex items-center justify-center text-white font-bold text-xs leading-none">
+                  H
+                </div>
+                <span className="font-bold text-white/70">Hypematter Media</span>
+              </>
+            )}
+          </a>
           <p className="text-white/30 text-sm">© {new Date().getFullYear()} All rights reserved.</p>
         </div>
       </footer>

@@ -2,16 +2,16 @@ import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, ArrowRight } from 'lucide-react';
 import { useLocation } from 'react-router-dom';
+import logoUrl from '../assets/GenArc Brand asset/White text logo.svg';
 
 const Navbar = ({ openPopup }) => {
   const [menuOpen, setMenuOpen] = React.useState(false);
   const [logoError, setLogoError] = React.useState(false);
-  const logoUrl = 'https://res.cloudinary.com/dxxjiuq25/image/upload/v1780063200/Logo_pwwrgn.png';
   const location = useLocation();
   const isAvatarPage = location.pathname === '/avatar';
 
   const mainLinks = [
-    { name: 'Solution', href: '/#services' },
+    { name: 'Portfolio', href: '/#portfolio' },
     { name: 'Avatar', href: '/avatar' },
     { name: 'Testimonials', href: '/#testimonials' },
   ];
@@ -31,12 +31,12 @@ const Navbar = ({ openPopup }) => {
         <div className="flex justify-between items-center h-20">
           
           {/* Logo - Left */}
-          <a href="/" className="flex-shrink-0 flex items-center gap-2 cursor-pointer w-48 group">
+          <a href="/" className="flex-shrink-0 flex items-center gap-2 cursor-pointer w-64 group">
             {!logoError ? (
               <img 
                 src={logoUrl} 
                 alt="Hypematter Media" 
-                className="h-14 w-auto object-contain transition-transform group-hover:scale-105" 
+                className="h-18 w-auto object-contain transition-transform group-hover:scale-105" 
                 onError={() => setLogoError(true)}
               />
             ) : (

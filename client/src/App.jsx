@@ -7,9 +7,8 @@ import HowItWorks from './components/HowItWorks'
 import Footer from './components/Footer'
 import Background3D from './components/Background3D'
 import ContactPopup from './components/ContactPopup'
-import Pricing from './pages/Pricing'
 import Avatar from './pages/Avatar'
-import Services from './components/Services'
+import Pricing from './pages/Pricing'
 import Testimonials from './components/Testimonials'
 import VideoShowcase from './components/VideoShowcase'
 import ClientMarquee from './components/ClientMarquee'
@@ -47,7 +46,6 @@ function LandingPage({ openPopup }) {
         <KeyBenefits />
         <HowItWorks />
         <Expertise />
-        <Services />
         <Testimonials />
         <VideoShowcase />
         <FAQ />

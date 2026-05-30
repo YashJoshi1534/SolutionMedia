@@ -1,13 +1,19 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import logo1 from '../assets/GenArc Brand asset/1.svg';
+import logo2 from '../assets/GenArc Brand asset/2.svg';
+import logo3 from '../assets/GenArc Brand asset/3.svg';
+import logo4 from '../assets/GenArc Brand asset/4.svg';
+import logo5 from '../assets/GenArc Brand asset/5.svg';
+import logo6 from '../assets/GenArc Brand asset/6.svg';
 
 const partnersList = [
-  { name: 'Partner 1', logo: 'https://res.cloudinary.com/dxxjiuq25/image/upload/v1780063019/3_tlk2tj.png' },
-  { name: 'Partner 2', logo: 'https://res.cloudinary.com/dxxjiuq25/image/upload/v1780063019/6_deqg0l.png' },
-  { name: 'Partner 3', logo: 'https://res.cloudinary.com/dxxjiuq25/image/upload/v1780063019/2_muicjq.png' },
-  { name: 'Partner 4', logo: 'https://res.cloudinary.com/dxxjiuq25/image/upload/v1780063019/1_bsymkv.png' },
-  { name: 'Partner 5', logo: 'https://res.cloudinary.com/dxxjiuq25/image/upload/v1780063019/4_tqomci.png' },
-  { name: 'Partner 6', logo: 'https://res.cloudinary.com/dxxjiuq25/image/upload/v1780063019/5_jqvpzw.png' }
+  { name: 'Partner 1', logo: logo1 },
+  { name: 'Partner 2', logo: logo2 },
+  { name: 'Partner 3', logo: logo3 },
+  { name: 'Partner 4', logo: logo4 },
+  { name: 'Partner 5', logo: logo5 },
+  { name: 'Partner 6', logo: logo6 }
 ];
 
 const ClientMarquee = () => {
@@ -53,7 +59,7 @@ const ClientMarquee = () => {
           {/* Stat 1 */}
           <div className="flex flex-col items-center relative z-10">
             <span className="text-4xl sm:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-[#9945FF] via-[#C084FC] to-[#BE2F7B] tracking-tight">
-              1M+
+              5M+
             </span>
             <span className="mt-2 text-xs sm:text-sm font-bold tracking-widest text-white/50 uppercase">
               views generated
@@ -66,7 +72,7 @@ const ClientMarquee = () => {
           {/* Stat 2 */}
           <div className="flex flex-col items-center relative z-10">
             <span className="text-4xl sm:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-[#9945FF] via-[#C084FC] to-[#BE2F7B] tracking-tight">
-              100+
+              500+
             </span>
             <span className="mt-2 text-xs sm:text-sm font-bold tracking-widest text-white/50 uppercase">
               Videos Created
@@ -102,7 +108,7 @@ const ClientMarquee = () => {
                   <img
                     src={logoUrl}
                     alt={partner.name}
-                    className="h-24 w-auto object-contain mix-blend-screen opacity-75 group-hover:opacity-100 transition-all duration-300"
+                    className="h-32 w-auto object-contain mix-blend-screen opacity-75 group-hover:opacity-100 transition-all duration-300"
                     onError={() => handleLogoError(partner.name)}
                   />
                 ) : (

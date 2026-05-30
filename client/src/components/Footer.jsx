@@ -1,10 +1,10 @@
 import React from 'react';
 import { ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
+import logoUrl from '../assets/GenArc Brand asset/White text logo.svg';
 
 const Footer = ({ openPopup }) => {
   const [logoError, setLogoError] = React.useState(false);
-  const logoUrl = 'https://res.cloudinary.com/dxxjiuq25/image/upload/v1780063200/Logo_pwwrgn.png';
 
   return (
     <footer className="bg-[#0A0A0F] pt-20 pb-10 border-t border-white/5">
@@ -39,7 +39,7 @@ const Footer = ({ openPopup }) => {
             <img 
               src={logoUrl} 
               alt="Hypematter Media" 
-              className="h-12 w-auto object-contain hover:opacity-90 transition-opacity" 
+              className="h-16 w-auto object-contain hover:opacity-90 transition-opacity" 
               onError={() => setLogoError(true)}
             />
           ) : (
