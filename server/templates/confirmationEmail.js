@@ -27,8 +27,8 @@ export function buildConfirmationEmail({ name, subject, message, preferredDate, 
   return `
     <div style="font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 600px; margin: 40px auto; background: #0A0A0F; border-radius: 32px; overflow: hidden; border: 1px solid rgba(255,255,255,0.08); color: #F5F5FA; box-shadow: 0 30px 60px rgba(0,0,0,0.6);">
       <div style="background: linear-gradient(135deg, #12121A, #0A0A0F); padding: 56px 48px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.05);">
-        <div style="width: 64px; height: 64px; background: #9945FF; border-radius: 20px; margin: 0 auto 32px; display: flex; justify-content: center; align-items: center; font-weight: bold; font-size: 32px; box-shadow: 0 12px 32px rgba(153, 69, 255, 0.3); color: #ffffff;">H</div>
-        <h1 style="color: #ffffff; margin: 0 0 12px; font-size: 32px; font-weight: 800; letter-spacing: -0.04em; line-height: 1.1;">Welcome to the <span style="color: #9945FF;">Elite</span>, ${name}</h1>
+        <div style="width: 64px; height: 64px; background: #9945FF; border-radius: 20px; margin: 0 auto 32px; display: flex; justify-content: center; align-items: center; font-weight: bold; font-size: 32px; box-shadow: 0 12px 32px rgba(153, 69, 255, 0.3); color: #ffffff;">G</div>
+        <h1 style="color: #ffffff; margin: 0 0 12px; font-size: 32px; font-weight: 800; letter-spacing: -0.04em; line-height: 1.1;">Welcome to <span style="color: #9945FF;">GenArc Studio</span>, ${name}</h1>
         <p style="color: rgba(245, 245, 250, 0.5); margin: 0; font-size: 18px; line-height: 1.5; font-weight: 500;">Your vision for <span style="color: #ffffff;">${subject}</span> has been received.</p>
       </div>
 
@@ -62,7 +62,7 @@ export function buildConfirmationEmail({ name, subject, message, preferredDate, 
 
       <div style="padding: 40px; background: linear-gradient(180deg, rgba(153, 69, 255, 0.05), rgba(153, 69, 255, 0.02)); text-align: center; border-top: 1px solid rgba(255,255,255,0.05);">
         <p style="margin: 0 0 12px; color: rgba(245, 245, 250, 0.6); font-size: 15px;">Need immediate assistance? Reply directly to this dispatcher.</p>
-        <p style="margin: 0; color: rgba(245, 245, 250, 0.3); font-size: 12px; font-weight: 500;">© ${year} Hypematter Media. All rights reserved.</p>
+        <p style="margin: 0; color: rgba(245, 245, 250, 0.3); font-size: 12px; font-weight: 500;">© ${year} GenArc Studio. All rights reserved.</p>
       </div>
     </div>
   `;

@@ -1,7 +1,7 @@
 import React from 'react';
 import { ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
-import logoUrl from '../assets/GenArc Brand asset/White text logo.svg';
+import logoUrl from '../assets/GenArc Brand asset/GenArc Logo.svg';
 
 const Footer = ({ openPopup }) => {
   const [logoError, setLogoError] = React.useState(false);
@@ -36,16 +36,21 @@ const Footer = ({ openPopup }) => {
 
         <div className="flex flex-col md:flex-row justify-between items-center gap-6 text-white/30 text-sm">
           {!logoError ? (
-            <img 
-              src={logoUrl} 
-              alt="Hypematter Media" 
-              className="h-16 w-auto object-contain hover:opacity-90 transition-opacity" 
-              onError={() => setLogoError(true)}
-            />
+            <div className="flex items-center gap-3">
+              <img 
+                src={logoUrl} 
+                alt="GenArc Studio" 
+                className="h-12 w-auto object-contain hover:opacity-90 transition-opacity" 
+                onError={() => setLogoError(true)}
+              />
+              <span className="font-bold text-xl tracking-tight text-white hover:text-[#C084FC] transition-colors">
+                GenArc Studio
+              </span>
+            </div>
           ) : (
             <div className="flex items-center gap-2">
-              <div className="w-6 h-6 bg-[#9945FF] rounded flex justify-center items-center text-white font-bold text-xs leading-none">H</div>
-              <span className="font-bold text-white/70">Hypematter Media</span>
+              <div className="w-6 h-6 bg-[#9945FF] rounded flex justify-center items-center text-white font-bold text-xs leading-none">G</div>
+              <span className="font-bold text-xl text-white">GenArc Studio</span>
             </div>
           )}
           
@@ -54,7 +59,7 @@ const Footer = ({ openPopup }) => {
             <a href="#" className="hover:text-[#C084FC] transition-colors">Terms of Service</a>
           </div>
           
-          <p>© {new Date().getFullYear()} Hypematter Media. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} GenArc Studio. All rights reserved.</p>
         </div>
 
       </div>

@@ -5,7 +5,7 @@ import {
   Palette, Video, Wand2, Calendar, Lightbulb,
   Megaphone, TrendingUp, Crown, Menu, X
 } from 'lucide-react';
-import logoUrl from '../assets/GenArc Brand asset/White text logo.svg';
+import logoUrl from '../assets/GenArc Brand asset/GenArc Logo.svg';
 
 const packages = [
   {
@@ -77,21 +77,26 @@ const Pricing = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-20">
             {/* Logo */}
-            <a href="/" className="flex items-center gap-2.5 group">
+            <a href="/" className="flex items-center gap-3 group">
               {!logoError ? (
-                <img 
-                  src={logoUrl} 
-                  alt="Hypematter Media" 
-                  className="h-18 w-auto object-contain transition-transform group-hover:scale-105" 
-                  onError={() => setLogoError(true)}
-                />
+                <div className="flex items-center gap-3">
+                  <img 
+                    src={logoUrl} 
+                    alt="GenArc Studio" 
+                    className="h-12 w-auto object-contain transition-transform group-hover:scale-105" 
+                    onError={() => setLogoError(true)}
+                  />
+                  <span className="font-bold text-xl tracking-tight text-white group-hover:text-[#C084FC] transition-colors">
+                    GenArc Studio
+                  </span>
+                </div>
               ) : (
                 <>
                   <div className="w-9 h-9 bg-gradient-to-br from-[#9945FF] to-[#7B2FBE] rounded-xl flex items-center justify-center text-white font-bold text-lg leading-none shadow-lg shadow-[#9945FF]/20">
-                    H
+                    G
                   </div>
                   <span className="font-bold text-xl tracking-tight text-white group-hover:text-[#C084FC] transition-colors">
-                    Hypematter Media
+                    GenArc Studio
                   </span>
                 </>
               )}
@@ -267,24 +272,29 @@ const Pricing = () => {
       {/* Footer */}
       <footer className="relative z-10 border-t border-white/5 py-8 px-4">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
-          <a href="/" className="flex items-center gap-2">
+          <a href="/" className="flex items-center gap-3">
             {!logoError ? (
-              <img 
-                src={logoUrl} 
-                alt="Hypematter Media" 
-                className="h-14 w-auto object-contain hover:opacity-90 transition-opacity" 
-                onError={() => setLogoError(true)}
-              />
+              <div className="flex items-center gap-3">
+                <img 
+                  src={logoUrl} 
+                  alt="GenArc Studio" 
+                  className="h-10 w-auto object-contain hover:opacity-90 transition-opacity" 
+                  onError={() => setLogoError(true)}
+                />
+                <span className="font-bold text-xl tracking-tight text-white hover:text-[#C084FC] transition-colors">
+                  GenArc Studio
+                </span>
+              </div>
             ) : (
               <>
                 <div className="w-6 h-6 bg-[#9945FF] rounded flex items-center justify-center text-white font-bold text-xs leading-none">
-                  H
+                  G
                 </div>
-                <span className="font-bold text-white/70">Hypematter Media</span>
+                <span className="font-bold text-white/70">GenArc Studio</span>
               </>
             )}
           </a>
-          <p className="text-white/30 text-sm">© {new Date().getFullYear()} All rights reserved.</p>
+          <p className="text-white/30 text-sm">© {new Date().getFullYear()} GenArc Studio. All rights reserved.</p>
         </div>
       </footer>
     </div>

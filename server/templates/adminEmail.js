@@ -58,7 +58,7 @@ export function buildAdminEmail({ name, email, subject, message, preferredDate, 
       </div>
 
       <div style="padding: 32px; background: rgba(255,255,255,0.01); text-align: center; border-top: 1px solid rgba(255,255,255,0.05);">
-        <p style="margin: 0; color: rgba(245, 245, 250, 0.3); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em;">Hypematter Media — Strategic Operations</p>
+        <p style="margin: 0; color: rgba(245, 245, 250, 0.3); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em;">GenArc Studio — Strategic Operations</p>
       </div>
     </div>
   `;
