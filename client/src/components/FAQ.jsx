@@ -5,16 +5,21 @@ import { ChevronDown, HelpCircle } from 'lucide-react';
 const faqItems = [
   {
     id: 1,
+    question: "Who is this for?",
+    answer: "Our systems are tailored to your brand. If you’re an entrepreneur, D2C brand, media business, funded startup or a podcast, we adapt and produce content best suited to your process and flexibility."
+  },
+  {
+    id: 2,
     question: "What kind of creative work can you create with AI?",
     answer: "We create product visuals, full AI-powered Meta ad creatives, social media assets, campaign content, and AI-driven workflows. As well as many other types of brand visuals tailored to your brand."
   },
   {
-    id: 2,
+    id: 3,
     question: "How long does a typical project take?",
     answer: "Project timelines depend on the scope, but most projects move from strategy to first results within one week."
   },
   {
-    id: 3,
+    id: 4,
     question: "Will I also be involved in the design process?",
     answer: "Absolutely! We believe in collaborative creation. You'll be involved at every stage of the design process, from initial concept development to final delivery. Your feedback and vision are integral to our creative process."
   }
@@ -90,32 +95,6 @@ const FAQ = () => {
             </h3>
           </motion.div>
         </div>
-
-        {/* Featured Introductory Box - "Who is this for?" */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7 }}
-          className="mb-16 bg-[#12121A]/30 border border-white/[0.04] p-8 md:p-10 rounded-3xl backdrop-blur-md relative overflow-hidden shadow-2xl hover:border-white/10 transition-all duration-500 group"
-        >
-          {/* Inner accent glow */}
-          <div className="absolute -top-24 -left-24 w-48 h-48 bg-[#9945FF]/10 rounded-full blur-3xl pointer-events-none group-hover:bg-[#9945FF]/15 transition-colors duration-500" />
-          
-          <div className="relative z-10 flex flex-col md:flex-row gap-6 items-start">
-            <div className="shrink-0 w-12 h-12 rounded-2xl bg-gradient-to-br from-[#9945FF] to-[#BE2F7B] flex items-center justify-center shadow-lg shadow-[#9945FF]/10 text-xl font-bold select-none">
-              🎯
-            </div>
-            <div className="flex-1">
-              <h4 className="text-xl md:text-2xl font-bold text-white mb-3">
-                Who is this for?
-              </h4>
-              <p className="text-white/60 text-sm md:text-base leading-relaxed">
-                Our systems are tailored to your brand. If you’re an entrepreneur, D2C brand, media business, funded startup or a podcast, we adapt and produce content best suited to your process and flexibility.
-              </p>
-            </div>
-          </div>
-        </motion.div>
 
         {/* Collapsible Accordion Grid */}
         <motion.div

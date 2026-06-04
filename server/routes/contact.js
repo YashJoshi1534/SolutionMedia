@@ -1,9 +1,14 @@
 import { Router } from "express";
+import path from "path";
+import { fileURLToPath } from "url";
 import logger from "../utils/logger.js";
 import transporter from "../config/transporter.js";
 import { buildAdminEmail } from "../templates/adminEmail.js";
 import { buildConfirmationEmail } from "../templates/confirmationEmail.js";
 import Contact from "../models/Contact.js";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const router = Router();
 
@@ -120,7 +125,7 @@ router.post("/", async (req, res) => {
     try {
       await Promise.all([
         transporter.sendMail({
-          from: process.env.EMAIL_USER,
+          from: `"GenArc Studio" <${process.env.EMAIL_USER}>`,
           replyTo: email,
           to: receiverEmail,
           subject: `[Lead] ${subject} — from ${name}`,
@@ -128,10 +133,17 @@ router.post("/", async (req, res) => {
         }),
 
         transporter.sendMail({
-          from: process.env.EMAIL_USER,
+          from: `"GenArc Studio" <${process.env.EMAIL_USER}>`,
           to: email,
-          subject: "Welcome to the Elite — Hypematter Media",
+          subject: "Welcome to the Elite — GenArc Studio",
           html: buildConfirmationEmail({ name, subject, message, preferredDate, preferredTime, timezone }),
+          attachments: [
+            {
+              filename: 'logo.png',
+              path: path.join(__dirname, "../../client/src/assets/GenArc Brand asset/high-resolution-color-logo.png"),
+              cid: 'logo@genarcstudio.com'
+            }
+          ]
         }),
       ]);
 

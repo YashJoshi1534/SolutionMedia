@@ -22,7 +22,7 @@ const PORT = process.env.PORT || 3001;
 app.use(express.json());
 
 const allowedOrigins = [
-  'http://localhost:5174',
+  'http://localhost:5173',
   'https://hypemattermedia.com',
   'https://www.hypemattermedia.com',
   'https://solution-media.vercel.app',
@@ -59,7 +59,7 @@ app.use(async (req, res, next) => {
 app.get('/', (req, res) => {
   res.json({
     success: true,
-    message: 'Hypematter Media API is running 🚀',
+    message: 'GenArc Studio API is running 🚀',
   });
 });
 

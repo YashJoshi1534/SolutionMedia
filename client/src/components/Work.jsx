@@ -37,7 +37,7 @@ const Work = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <h2 className="text-sm font-bold tracking-widest text-[#C084FC] uppercase mb-3">Portfolio</h2>
+            <h2 className="text-sm font-bold tracking-widest text-[#C084FC] uppercase mb-3">Work</h2>
             <h3 className="text-4xl lg:text-5xl font-extrabold mb-6 leading-tight">
               Our <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#9945FF] to-[#C084FC]">Work</span>
             </h3>

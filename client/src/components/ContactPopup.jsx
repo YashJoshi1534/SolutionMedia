@@ -11,8 +11,11 @@ import {
 } from 'lucide-react';
 
 const subjectOptions = [
-  { value: 'General Service', label: 'General Service' },
-  { value: 'Our Service', label: 'Our Service' },
+  { value: 'AI Avatar', label: 'AI Avatar' },
+  { value: 'Personal branding', label: 'Personal branding' },
+  { value: 'AI Cinematic videos', label: 'AI Cinematic videos' },
+  { value: 'Post-production services', label: 'Post-production services' },
+  { value: 'End-to-end marketing', label: 'End-to-end marketing' },
 ];
 
 const ContactPopup = ({ isOpen, onClose }) => {
@@ -286,6 +289,7 @@ const ContactPopup = ({ isOpen, onClose }) => {
                           selected={formData.date}
                           onChange={handleDateChange}
                           minDate={new Date()}
+                          filterDate={(date) => date.getDay() !== 0}
                           placeholderText="Date"
                           className={inputClasses}
                           dateFormat="MMM d, yyyy"
@@ -307,6 +311,13 @@ const ContactPopup = ({ isOpen, onClose }) => {
                           dateFormat="h:mm aa"
                           placeholderText="Time"
                           className={inputClasses}
+                          filterTime={(time) => {
+                            const hours = time.getHours();
+                            const minutes = time.getMinutes();
+                            if (hours < 12 || hours > 19) return false;
+                            if (hours === 19 && minutes > 0) return false;
+                            return true;
+                          }}
                           required
                         />
                       </div>

@@ -28,10 +28,10 @@ function LandingPage({ openPopup }) {
           openPopup={openPopup} 
           badgeText="Grow Your Influence"
           title="We build content systems for "
-          highlight="brands and founders,"
-          subtitle="faster, smarter, and more visual than anyone else."
+          highlight="brands and founders."
+          subtitle=""
           description={[
-            "We automate your content with an AI system, so your brand never runs out of content again."
+            "faster, smarter and more visual than anyone else"
           ]}
           ctaText="Book a Free discovery call"
         />

@@ -62,22 +62,7 @@ const Hero = ({
               </p>
             </div>
 
-            {/* Social Proof */}
-            <div className="flex items-center justify-center gap-4 pt-6 border-t border-white/10 w-full max-w-md">
-              <div className="flex -space-x-3">
-                {[1, 2, 3, 4].map((i) => (
-                  <div key={i} className={`w-10 h-10 rounded-full border-2 border-[#0A0A0F] flex justify-center items-center font-bold text-xs bg-[#1A1A2E] text-white/60`}>
-                   {i === 4 ? "+26" : "U"}
-                  </div>
-                ))}
-              </div>
-              <div className="text-sm text-left">
-                <div className="flex text-[#C084FC]">
-                  {[...Array(5)].map((_, i) => <Star key={i} className="w-4 h-4 fill-current" />)}
-                </div>
-                <p className="text-white/60 font-medium">Built systems for <span className="font-bold text-white">30+ clients</span></p>
-              </div>
-            </div>
+
           </motion.div>
         </div>
       </div>

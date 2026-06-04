@@ -1,5 +1,32 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect, useRef } from 'react';
+import { motion, useInView, animate } from 'framer-motion';
+
+const AnimatedCounter = ({ value, duration = 2 }) => {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, amount: 0.2 });
+  const [count, setCount] = useState(0);
+
+  const match = value.match(/^([\d.,]+)([a-zA-Z+]*)$/);
+  const targetNum = match ? parseFloat(match[1].replace(/,/g, '')) : 0;
+  const suffix = match ? match[2] : '';
+
+  useEffect(() => {
+    if (isInView) {
+      const controls = animate(0, targetNum, {
+        duration: duration,
+        ease: "easeOut",
+        onUpdate: (latest) => setCount(Math.round(latest))
+      });
+      return controls.stop;
+    }
+  }, [isInView, targetNum, duration]);
+
+  return (
+    <span ref={ref}>
+      {count}{suffix}
+    </span>
+  );
+};
 import logo1 from '../assets/GenArc Brand asset/1.svg';
 import logo2 from '../assets/GenArc Brand asset/2.svg';
 import logo3 from '../assets/GenArc Brand asset/3.svg';
@@ -59,7 +86,7 @@ const ClientMarquee = () => {
           {/* Stat 1 */}
           <div className="flex flex-col items-center relative z-10">
             <span className="text-4xl sm:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-[#9945FF] via-[#C084FC] to-[#BE2F7B] tracking-tight">
-              5M+
+              <AnimatedCounter value="5M+" />
             </span>
             <span className="mt-2 text-xs sm:text-sm font-bold tracking-widest text-white/50 uppercase">
               views generated
@@ -72,7 +99,7 @@ const ClientMarquee = () => {
           {/* Stat 2 */}
           <div className="flex flex-col items-center relative z-10">
             <span className="text-4xl sm:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-[#9945FF] via-[#C084FC] to-[#BE2F7B] tracking-tight">
-              500+
+              <AnimatedCounter value="500+" />
             </span>
             <span className="mt-2 text-xs sm:text-sm font-bold tracking-widest text-white/50 uppercase">
               Videos Created
@@ -83,7 +110,7 @@ const ClientMarquee = () => {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8 text-center">
         <p className="text-xs font-bold tracking-widest text-[#C084FC]/60 uppercase">
-          Trusted by Founders and Content Creators Worldwide
+          Trusted by founders and brands worldwide
         </p>
       </div>
 
