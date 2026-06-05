@@ -23,8 +23,8 @@ app.use(express.json());
 
 const allowedOrigins = [
   'http://localhost:5173',
-  'https://hypemattermedia.com',
-  'https://www.hypemattermedia.com',
+  'https://genarcstudio.com',
+  'https://www.genarcstudio.com',
   'https://solution-media.vercel.app',
   process.env.FRONTEND_URL,
 ].filter(Boolean);

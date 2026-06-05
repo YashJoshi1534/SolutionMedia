@@ -140,14 +140,14 @@ const ContactUs = () => {
               </p>
 
               <div className="space-y-6 relative z-10">
-                <a href="mailto:contact@hypemattermedia.com" className="flex items-center gap-4 group">
+                <a href="mailto:contact@genarcstudio.com" className="flex items-center gap-4 group">
                   <div className="w-11 h-11 rounded-xl bg-[#9945FF]/20 flex justify-center items-center group-hover:bg-[#9945FF]/30 transition-colors">
                     <Mail className="w-5 h-5 text-[#C084FC]" />
                   </div>
                   <div>
                     <p className="text-white/30 text-xs font-medium uppercase tracking-wider">Email</p>
                     <p className="text-white font-medium group-hover:text-[#C084FC] transition-colors">
-                      contact@hypemattermedia.com
+                      contact@genarcstudio.com
                     </p>
                   </div>
                 </a>

@@ -41,7 +41,7 @@ router.post("/", async (req, res) => {
     }
 
     const receiverEmail =
-      process.env.RECEIVER_EMAIL || "contact@hypemattermedia.com";
+      process.env.RECEIVER_EMAIL || "contact@genarcstudio.com";
 
     logger.info("[STEP 1] Validation passed", { receiverEmail });
     logger.info("Contact form received", { name, email });

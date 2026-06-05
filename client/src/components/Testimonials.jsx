@@ -6,7 +6,7 @@ const testimonials = [
   {
     name: "Alex Rivera",
     role: "Founder, Bloom & Co",
-    content: "The AI systems provided by Hypematter Media saved us 20+ hours a week on content production. It's like having a full-scale media team on autopilot.",
+    content: "The AI systems provided by GenArc Studio saved us 20+ hours a week on content production. It's like having a full-scale media team on autopilot.",
     avatar: "AR",
     rating: 5
   },
