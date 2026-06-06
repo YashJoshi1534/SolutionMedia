@@ -22,9 +22,12 @@ Vercel is now configured to read the explicit `server.js` wrapper in the root di
    - **Output Directory**: Override and leave blank.
 4. **Environment Variables**:
    - `MONGO_URI`: Your MongoDB connection string.
-   - `EMAIL_USER`: Your Nodemailer email address.
+   - `EMAIL_USER`: Your Nodemailer email address (e.g. contact@genarcstudio.com).
    - `EMAIL_PASS`: Your Nodemailer email password.
    - `RECEIVER_EMAIL`: Where you want to receive admin notifications.
+   - `SMTP_HOST`: (Optional) Your custom SMTP host (e.g., smtp.hostinger.com).
+   - `SMTP_PORT`: (Optional) Your custom SMTP port (e.g., 465).
+   - `SMTP_SECURE`: (Optional) Set to "true" for SSL/TLS, "false" for STARTTLS.
 
 ## Local Development
 Run the backend:
