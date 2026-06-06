@@ -34,7 +34,8 @@ app.use(cors({
     if (!origin || allowedOrigins.includes(origin) || origin.includes('vercel.app')) {
       callback(null, true);
     } else {
-      callback(new Error('Not allowed by CORS'));
+      console.warn(`[CORS] Blocked request from unauthorized origin: ${origin}`);
+      callback(null, false);
     }
   }
 }));
