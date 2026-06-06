@@ -111,8 +111,8 @@ const Pricing = () => {
                 Work
                 <div className="h-0.5 w-0 group-hover:w-full bg-[#9945FF] transition-all duration-300" />
               </a>
-              <a href="/#services" className="text-white/60 hover:text-[#9945FF] font-bold transition-all text-xs uppercase tracking-widest group">
-                Solution
+              <a href="/#how-it-works" className="text-white/60 hover:text-[#9945FF] font-bold transition-all text-xs uppercase tracking-widest group">
+                Process
                 <div className="h-0.5 w-0 group-hover:w-full bg-[#9945FF] transition-all duration-300" />
               </a>
               <a href="/avatar" className="text-white/60 hover:text-[#9945FF] font-bold transition-all text-xs uppercase tracking-widest group">
