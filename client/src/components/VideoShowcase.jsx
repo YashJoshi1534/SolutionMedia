@@ -77,10 +77,10 @@ const VideoShowcase = ({ openPopup }) => {
         <div className="text-center mb-16">
           <h2 className="text-sm font-bold tracking-widest text-[#C084FC] uppercase mb-3">Work</h2>
           <h3 className="text-4xl lg:text-5xl font-extrabold mb-6 leading-tight">
-            Interactive <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#9945FF] to-[#C084FC]">Showcase</span>
+            Content Production, <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#9945FF] to-[#C084FC]">Systematised</span>
           </h3>
           <p className="text-white/50 text-lg max-w-2xl mx-auto">
-            Explore our premium AI content engine. Browse our horizontal systems or vertical creative library directly inline below.
+            We build the production system that lets you publish consistently at the quality level your brand demands. We own editing trends in the industry
           </p>
         </div>
 
@@ -132,7 +132,7 @@ const VideoShowcase = ({ openPopup }) => {
               </h4>
               
               <p className="text-white/80 text-lg leading-relaxed">
-                We produce high grade launch videos for funded startups and media businesses.
+                We develop cinematic worlds using AI-native production pipelines guided by human storytellers.
               </p>
               
               <p className="text-white/40 text-sm leading-relaxed">
