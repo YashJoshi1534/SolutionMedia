@@ -14,6 +14,7 @@ const Navbar = ({ openPopup }) => {
     { name: 'Work', href: '/#work' },
     { name: 'Process', href: '/#how-it-works' },
     { name: 'Avatar', href: '/avatar' },
+    { name: 'Packages', href: '/#packages' },
     { name: 'Testimonials', href: '/#testimonials' },
   ];
 

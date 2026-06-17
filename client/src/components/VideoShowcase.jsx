@@ -2,12 +2,14 @@ import React from 'react';
 import { Play, Film, Tv, Sparkles, Cpu, Target, Smartphone } from 'lucide-react';
 
 const horizontalVideos = [
-  { id: '1Xw9n79EGzWXpvZ6gW7mC9ZZtgXoVkw21', title: 'Horizontal Video 1' },
-  { id: '1fs5I2lq0Mhz6Phr1wiklfLsoROFlBTR_', title: 'Horizontal Video 2' },
-  { id: '143GMnWXxB4cZygbaOvARqu8NqbA_p_xa', title: 'Horizontal Video 3' },
-  { id: '18jiJpJ2dhxZVw-7RZhwUTSwmoVkJ-61p', title: 'Horizontal Video 4' },
-  { id: '1mMZNrHZ0xjqwxyUsb95FGgmQtX_Kwrju', title: 'Horizontal Video 5' },
-  { id: '1MbdIENdbZTdlDb-bb0DAArc9QGQf7rTJ', title: 'Horizontal Video 6' }
+  { id: '6a32aa064e9e90564975a384', title: 'Horizontal Video 1' },
+  { id: '6a329e3a4e9e905649742799', title: 'Horizontal Video 2' },
+  { id: '6a32a9bd1ce628ced48e6991', title: 'Horizontal Video 3' },
+  { id: '6a32ad226a4f24de8a365346', title: 'Horizontal Video 4' },
+  { id: '6a329e3a4e9e905649742795', title: 'Horizontal Video 5' },
+  { id: '6a329e3a4e9e90564974278b', title: 'Horizontal Video 6' },
+  { id: '6a329e3a4e9e905649742788', title: 'Horizontal Video 7' },
+  { id: '6a329e3a1ce628ced48cee28', title: 'Horizontal Video 8' }
 ];
 
 const verticalVideos = [
@@ -62,7 +64,7 @@ const verticalVideos = [
   }
 ];
 
-const VideoShowcase = () => {
+const VideoShowcase = ({ openPopup }) => {
   return (
     <section id="work" className="py-24 bg-[#08080D] relative overflow-hidden text-white border-t border-white/5">
       {/* Background radial glows */}
@@ -78,40 +80,36 @@ const VideoShowcase = () => {
             Interactive <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#9945FF] to-[#C084FC]">Showcase</span>
           </h3>
           <p className="text-white/50 text-lg max-w-2xl mx-auto">
-            Explore our premium AI content engine. Scroll horizontally to see our horizontal systems, or browse our vertical creative library directly inline below.
+            Explore our premium AI content engine. Browse our horizontal systems or vertical creative library directly inline below.
           </p>
         </div>
 
-        {/* ─── SECTION 1: HORIZONTAL SCROLL SHOWCASE (6 Videos - Inline players) ─── */}
+        {/* ─── SECTION 1: AI PRODUCTION SHOWCASE (Grid Layout - 4 Columns) ─── */}
         <div className="mb-24">
           <div className="flex items-center justify-between mb-8">
             <h4 className="text-xl font-bold tracking-wide text-white/90">
               AI Production Showcase
             </h4>
             <span className="text-xs font-semibold text-white/40 uppercase tracking-widest">
-              Scroll Row →
+              Grid Layout
             </span>
           </div>
           
-          <div className="flex overflow-x-auto gap-6 pb-6 px-2 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 px-2">
             {horizontalVideos.map((video) => (
               <div
                 key={video.id}
-                className="flex-shrink-0 w-[280px] sm:w-[310px] bg-[#12121A]/60 backdrop-blur-md rounded-3xl border border-white/10 p-3 shadow-2xl flex flex-col justify-start hover:border-white/20 transition-all duration-300"
+                className="bg-[#12121A]/60 backdrop-blur-md rounded-3xl border border-white/10 p-3 shadow-2xl flex flex-col justify-start hover:border-white/20 transition-all duration-300"
               >
                 {/* Embed Iframe Container (9:16 aspect ratio) */}
                 <div className="relative w-full aspect-[9/16] rounded-2xl overflow-hidden bg-black/40 border border-white/5 shadow-inner">
                   <iframe
-                    src={`https://drive.google.com/file/d/${video.id}/preview`}
-                    className="absolute top-0 bottom-0 border-none"
-                    style={{
-                      width: '316.05%',
-                      height: '100%',
-                      left: '-108.02%'
-                    }}
-                    allow="autoplay; encrypted-media"
+                    src={`https://play.gumlet.io/embed/${video.id}`}
+                    className="absolute inset-0 w-full h-full border-none"
+                    allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture; fullscreen; clipboard-write"
                     allowFullScreen
                     title={video.title}
+                    loading="lazy"
                   ></iframe>
                 </div>
               </div>
@@ -119,50 +117,53 @@ const VideoShowcase = () => {
           </div>
         </div>
 
-        {/* ─── SECTION 2: VERTICAL SQUARES SHOWCASE (7 Videos - Inline landscape rectangle players) ─── */}
-        <div>
-          <div className="flex items-center justify-between mb-8 border-t border-white/5 pt-12">
-            <h4 className="text-xl font-bold tracking-wide text-white/90">
-              Vertical Creative Library
-            </h4>
-            <span className="text-xs font-semibold text-white/40 uppercase tracking-widest">
-              Grid Layout
-            </span>
-          </div>
+        {/* ─── SECTION 2: FEATURED SPOTLIGHT ─── */}
+        <div className="border-t border-white/5 pt-16 mt-16">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            {/* Left Content Column */}
+            <div className="lg:col-span-5 space-y-6 text-left">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-[#9945FF]/10 border border-[#9945FF]/20 text-[#C084FC] uppercase tracking-wider">
+                <Sparkles className="w-3.5 h-3.5" />
+                <span>Featured Showcase</span>
+              </div>
+              
+              <h4 className="text-3xl lg:text-4xl font-bold tracking-tight text-white">
+                GenArc <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#9945FF] to-[#C084FC]">Spotlight</span>
+              </h4>
+              
+              <p className="text-white/80 text-lg leading-relaxed">
+                We produce high grade launch videos for funded startups and media businesses.
+              </p>
+              
+              <p className="text-white/40 text-sm leading-relaxed">
+                More proof of work in stealth. Reach out for info.
+              </p>
+              
+              <div className="pt-2">
+                <button
+                  onClick={openPopup}
+                  className="btn-primary hover:shadow-[0_0_20px_rgba(153,69,255,0.4)]"
+                >
+                  Book a Discovery Call
+                </button>
+              </div>
+            </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {verticalVideos.map((video) => (
-              <div
-                key={video.id}
-                className="bg-[#12121A]/60 backdrop-blur-md rounded-3xl border border-white/5 p-4 shadow-2xl flex flex-col justify-between hover:border-[#9945FF]/40 hover:bg-[#12121A]/95 transition-all duration-300 group overflow-hidden"
-              >
-                {/* Widescreen Video Container (Rectangle 16:9 aspect ratio) */}
-                <div className="relative w-full aspect-[16/9] rounded-2xl overflow-hidden bg-black/40 border border-white/5 shadow-inner mb-4">
+            {/* Right Video Column */}
+            <div className="lg:col-span-7">
+              <div className="relative w-full aspect-[480/253] rounded-3xl overflow-hidden bg-black/40 border border-white/10 shadow-2xl p-2 hover:border-[#9945FF]/40 hover:bg-[#12121A]/90 transition-all duration-300 group">
+                <div className="relative w-full h-full rounded-2xl overflow-hidden bg-black shadow-inner">
                   <iframe
-                    src={`https://www.youtube.com/embed/${video.id}?autoplay=0&mute=1&loop=1&playlist=${video.id}&rel=0&playsinline=1`}
-                    className="absolute inset-0 w-full h-full border-none z-10"
-                    allow="autoplay; encrypted-media"
+                    src="https://play.gumlet.io/embed/6a32adf66a4f24de8a366bf2"
+                    className="absolute inset-0 w-full h-full border-none"
+                    allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture; fullscreen; clipboard-write"
                     allowFullScreen
-                    title={video.title}
+                    title="GenArc Spotlight Video"
+                    loading="lazy"
                   ></iframe>
                 </div>
-
-                <div className="relative z-10 w-full text-left">
-                  <div className="flex items-center justify-between mb-3">
-                    <span className="px-2.5 py-0.5 rounded-full text-[9px] font-bold bg-[#9945FF]/10 border border-[#9945FF]/20 text-[#C084FC] uppercase tracking-wider">
-                      {video.category}
-                    </span>
-                  </div>
-                  
-                  <h5 className="text-lg font-bold text-white mb-2 leading-snug group-hover:text-[#C084FC] transition-colors">
-                    {video.title}
-                  </h5>
-                  <p className="text-xs text-white/40 leading-relaxed line-clamp-2">
-                    {video.description}
-                  </p>
-                </div>
               </div>
-            ))}
+            </div>
           </div>
         </div>
 

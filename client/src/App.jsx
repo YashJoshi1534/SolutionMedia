@@ -8,7 +8,7 @@ import Footer from './components/Footer'
 import Background3D from './components/Background3D'
 import ContactPopup from './components/ContactPopup'
 import Avatar from './pages/Avatar'
-import Pricing from './pages/Pricing'
+import Packages from './components/Packages'
 import Testimonials from './components/Testimonials'
 import VideoShowcase from './components/VideoShowcase'
 import ClientMarquee from './components/ClientMarquee'
@@ -47,7 +47,8 @@ function LandingPage({ openPopup }) {
         <HowItWorks />
         <Expertise />
         <Testimonials />
-        <VideoShowcase />
+        <VideoShowcase openPopup={openPopup} />
+        <Packages openPopup={openPopup} />
         <FAQ />
       </main>
       <Footer openPopup={openPopup} />
@@ -64,7 +65,7 @@ function App() {
       <Routes>
         <Route path="/" element={<LandingPage openPopup={openPopup} />} />
         <Route path="/avatar" element={<Avatar openPopup={openPopup} />} />
-        <Route path="/pricing" element={<Pricing />} />
+        <Route path="/pricing" element={<Navigate to="/" replace />} />
       </Routes>
       <ContactPopup isOpen={popupOpen} onClose={() => setPopupOpen(false)} />
     </>
