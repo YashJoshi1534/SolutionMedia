@@ -57,8 +57,8 @@ const Hero = ({
                 {ctaText}
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </button>
-              <p className="text-sm font-medium text-white/50 flex items-center gap-2">
-                👉 Want to see if this works for you?
+              <p className="text-sm font-medium text-white/50">
+                Want to see if this works for you?
               </p>
             </div>
 

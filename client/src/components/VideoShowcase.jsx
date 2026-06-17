@@ -86,13 +86,10 @@ const VideoShowcase = ({ openPopup }) => {
 
         {/* ─── SECTION 1: AI PRODUCTION SHOWCASE (Grid Layout - 4 Columns) ─── */}
         <div className="mb-24">
-          <div className="flex items-center justify-between mb-8">
-            <h4 className="text-xl font-bold tracking-wide text-white/90">
-              AI Production Showcase
-            </h4>
-            <span className="text-xs font-semibold text-white/40 uppercase tracking-widest">
-              Grid Layout
-            </span>
+          <div className="mb-8">
+              {/* <h4 className="text-xl font-bold tracking-wide text-white/90">
+                AI Production Showcase
+              </h4> */}
           </div>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 px-2">
@@ -134,10 +131,7 @@ const VideoShowcase = ({ openPopup }) => {
               <p className="text-white/80 text-lg leading-relaxed">
                 We develop cinematic worlds using AI-native production pipelines guided by human storytellers.
               </p>
-              
-              <p className="text-white/40 text-sm leading-relaxed">
-                More proof of work in stealth. Reach out for info.
-              </p>
+
               
               <div className="pt-2">
                 <button

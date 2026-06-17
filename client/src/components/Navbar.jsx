@@ -11,7 +11,6 @@ const Navbar = ({ openPopup }) => {
   const isAvatarPage = location.pathname === '/avatar';
 
   const mainLinks = [
-    { name: 'Work', href: '/#work' },
     { name: 'Process', href: '/#how-it-works' },
     { name: 'Avatar', href: '/avatar' },
     { name: 'Packages', href: '/#packages' },
