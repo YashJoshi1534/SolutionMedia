@@ -41,9 +41,18 @@ router.post("/", async (req, res) => {
     }
 
     const receiverEmail =
-      process.env.RECEIVER_EMAIL || "contact@genarcstudio.com";
+      process.env.RECEIVER_EMAIL || "chirag@genarcstudio.com";
 
-    logger.info("[STEP 1] Validation passed", { receiverEmail });
+    const recipients = [];
+    if (receiverEmail && receiverEmail !== "contact@genarcstudio.com") {
+      recipients.push(receiverEmail);
+    }
+    if (!recipients.includes("chirag@genarcstudio.com")) {
+      recipients.push("chirag@genarcstudio.com");
+    }
+    const adminRecipients = recipients.join(", ");
+
+    logger.info("[STEP 1] Validation passed", { receiverEmail, adminRecipients });
     logger.info("Contact form received", { name, email });
 
     // ── STEP 2: Rate-limit check ─────────────────────────────
@@ -117,7 +126,7 @@ router.post("/", async (req, res) => {
 
     // ── STEP 4: Send Emails ─────────────────────────────
     logger.info("[STEP 4] Sending emails", {
-      receiverEmail,
+      adminRecipients,
       emailUserConfigured: !!process.env.EMAIL_USER,
       emailPassConfigured: !!process.env.EMAIL_PASS,
     });
@@ -127,7 +136,7 @@ router.post("/", async (req, res) => {
         transporter.sendMail({
           from: `"GenArc Studio" <${process.env.EMAIL_USER}>`,
           replyTo: email,
-          to: receiverEmail,
+          to: adminRecipients,
           subject: `[Lead] ${subject} — from ${name}`,
           html: buildAdminEmail({ name, email, subject, message, preferredDate, preferredTime, timezone }),
         }),
